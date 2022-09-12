@@ -1,0 +1,11 @@
+pidfile = 'oauth2_server.pid'
+proc_name = 'oauth2_server'
+workers = 7
+max_requests = 2
+bind = '0.0.0.0:8080'
+backlog = 2048
+capture_output = True
+accesslog = '-'
+errorlog = '-'
+timeout = 1200
+keepalive = 2

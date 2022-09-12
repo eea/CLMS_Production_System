@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  status_manager:
+    build:
+      context: ./services/status_manager
+      args:
+        - GIT_USER=$GIT_USER
+        - GIT_PW=$GIT_PW
+    container_name: status_manager
+    restart: always
+    command: python status_manager.py
+    env_file:
+      - services/status_manager/.env

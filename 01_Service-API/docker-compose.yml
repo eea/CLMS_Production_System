@@ -1,0 +1,99 @@
+version: '3.7'
+
+services:
+  reverse-proxy:
+    image: traefik:latest
+    container_name: web_server
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./services/proxy_server/traefik/traefik.yml:/traefik.yml:ro
+      - traefik_cert_data:/letsencrypt
+    networks:
+      - traefik_proxy_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.entryPoints=web_secure_https"
+      - "traefik.http.routers.api.rule=Host(`$TRAEFIK_DOMAIN`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.api.middlewares=dashboard_basic_auth"
+      - "traefik.http.middlewares.dashboard_basic_auth.basicauth.users=geoville:$$apr1$$GNDpC4ZG$$xe16xZTnVOuUo3b4LpHcH0"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=myresolver"
+
+  backend:
+    build:
+      context: ./services/backend_api
+      args:
+        - GIT_USER=$GIT_USER
+        - GIT_PW=$GIT_PW
+    container_name: api
+    restart: always
+    command: gunicorn -c gunicorn_config.py wsgi:app
+    ports:
+      - "8080:8080"
+    env_file:
+      - services/backend_api/.env
+    networks:
+      - traefik_proxy_network
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flask_backend.entryPoints=web_secure_https"
+      - "traefik.http.routers.flask_backend.rule=Host(`$BACKEND_DOMAIN`)"
+      - "traefik.http.routers.flask_backend.tls=true"
+      - "traefik.http.routers.flask_backend.tls.certresolver=myresolver"
+
+  db:
+    build:
+      context: ./services/database
+    container_name: postgresql
+    restart: always
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=$POSTGRES_SUPER_USER
+      - POSTGRES_PASSWORD=$POSTGRES_SUPER_USER_PASSWORD
+      - DB_DATABASE_NAME=$ADDITIONAL_DATABASE_NAME
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    volumes:
+      - ./services/database/db_init_script:/docker-entrypoint-initdb.d/
+      - ./services/database/postgresql.conf:/etc/postgresql/postgresql.conf
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - traefik_proxy_network
+    depends_on:
+      - reverse-proxy
+
+  message_queue:
+    build:
+      context: ./services/rabbitmq
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "15672:15672"
+      - "15671:15671"
+      - "5672:5672"
+      - "5671:5671"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_logs:/var/log/rabbitmq
+      - ./services/rabbitmq/config_files:/etc/rabbitmq
+    networks:
+      - traefik_proxy_network
+
+volumes:
+  traefik_cert_data:
+  postgresql_data:
+  rabbitmq_data:
+  rabbitmq_logs:
+
+networks:
+ traefik_proxy_network:
+    external: true

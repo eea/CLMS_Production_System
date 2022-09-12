@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# PyCharm
+.idea
+
+# Virtual environment
+.env/
+.venv/
+venv/
+/venv/
+
+# Docker
+.docker
+docker-compose.yml
+Dockerfile
+
+# Git
+.git
+.gitignore

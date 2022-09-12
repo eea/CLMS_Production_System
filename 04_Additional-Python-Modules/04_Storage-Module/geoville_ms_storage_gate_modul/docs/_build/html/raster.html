@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Raster &mdash; GeoVille Storage Gate 21.4 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Vector" href="vector.html" />
+    <link rel="prev" title="netCDF" href="netCDF.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #f7d299" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GeoVille Storage Gate
+          
+
+          
+            
+            <img src="_static/storage_gate_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                21.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">GETTING STARTED:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">HOW-TO GUIDES:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ncdf_guide.html">How to work with netCDF files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raster_guide.html">How to work with raster data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vector_guide.html">How to work with vector data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">USAGE EXAMPLES:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage_example/usage_examples.html">Usage examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">REFERENCE GUIDE:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="geoville_storage_gate.html">geoville_storage_gate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="netCDF.html">netCDF</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Raster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vector.html">Vector</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GeoVille Storage Gate</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="geoville_storage_gate.html">geoville_storage_gate</a> &raquo;</li>
+        
+      <li>Raster</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/raster.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-geoville_storage_gate.raster">
+<span id="raster"></span><h1>Raster<a class="headerlink" href="#module-geoville_storage_gate.raster" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="geoville_storage_gate.raster.create_by_group">
+<code class="sig-prename descclassname">geoville_storage_gate.raster.</code><code class="sig-name descname">create_by_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em>, <em class="sig-param"><span class="n">profile</span></em>, <em class="sig-param"><span class="n">ncdf_path</span></em>, <em class="sig-param"><span class="n">group</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em>, <em class="sig-param"><span class="n">array_variable</span><span class="o">=</span><span class="default_value">'raster'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.raster.create_by_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new netcdf file with a new group in which the array will be saved
+with the identifier “array_variable”. The numpy array needs to have an
+axis=0 of the same length than the time range in days
+(start_time - end_time).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> – numpy array that contains the new data to write</p></li>
+<li><p><strong>profile</strong> – dictionary including all metadata (rasterio’s profile)</p></li>
+<li><p><strong>ncdf_path</strong> – path to the netcdf file</p></li>
+<li><p><strong>group</strong> – group name of the netcdf dataset     where the new array or the update will take place</p></li>
+<li><p><strong>start_time</strong> – start date (e.g. 2019-12-31)</p></li>
+<li><p><strong>end_time</strong> – end date (e.g. 2019-12-31)</p></li>
+<li><p><strong>array_variable</strong> – Name of the variable within the netcdf group that     represents the raster data in form of an array</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.raster.get_dates">
+<code class="sig-prename descclassname">geoville_storage_gate.raster.</code><code class="sig-name descname">get_dates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncdf_path</span></em>, <em class="sig-param"><span class="n">group</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.raster.get_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of dates that represent the temporal dimension of a given
+group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ncdf_path</strong> – path to the netcdf file</p></li>
+<li><p><strong>group</strong> – group name of the netcdf dataset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of date strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.raster.read_by_bounds">
+<code class="sig-prename descclassname">geoville_storage_gate.raster.</code><code class="sig-name descname">read_by_bounds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncdf_path</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em>, <em class="sig-param"><span class="n">bounds</span></em>, <em class="sig-param"><span class="n">array_variable</span><span class="o">=</span><span class="default_value">'raster'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.raster.read_by_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a raster (subset) within the given netcdf file. The bounds and
+array_variable define the file-intern data structure. The bounds come from
+a vector dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ncdf_path</strong> – path to a netcdf file</p></li>
+<li><p><strong>bounds</strong> – boundary for the subset (shapely.geometry.polygon.Polygon)</p></li>
+<li><p><strong>start_time</strong> – start date (e.g. 2019-12-31)</p></li>
+<li><p><strong>end_time</strong> – end date (e.g. 2019-12-31)</p></li>
+<li><p><strong>array_variable</strong> – Name of the variable within the netcdf group that     represents the raster data in form of an array</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>raster subset in form of a numpy array     and the respective Affine transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.raster.read_by_group">
+<code class="sig-prename descclassname">geoville_storage_gate.raster.</code><code class="sig-name descname">read_by_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncdf_path</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em>, <em class="sig-param"><span class="n">group</span></em>, <em class="sig-param"><span class="n">array_variable</span><span class="o">=</span><span class="default_value">'raster'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.raster.read_by_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a raster (subset) within the given netcdf file. The group and
+array_variable define the file-intern data structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ncdf_path</strong> – path to a netcdf file</p></li>
+<li><p><strong>group</strong> – netcdf group name</p></li>
+<li><p><strong>start_time</strong> – start date (e.g. 2019-12-31)</p></li>
+<li><p><strong>end_time</strong> – end date (e.g. 2019-12-31)</p></li>
+<li><p><strong>array_variable</strong> – Name of the variable within the netcdf group that     represents the raster data in form of an array</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>raster subset in form of a numpy array     and the respective Affine transformation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.raster.update_by_bounds">
+<code class="sig-prename descclassname">geoville_storage_gate.raster.</code><code class="sig-name descname">update_by_bounds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em>, <em class="sig-param"><span class="n">profile</span></em>, <em class="sig-param"><span class="n">ncdf_path</span></em>, <em class="sig-param"><span class="n">bounds</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em>, <em class="sig-param"><span class="n">array_variable</span><span class="o">=</span><span class="default_value">'raster'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.raster.update_by_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a raster (subset) within the given/new netcdf file. The bounds and
+array_variable define the file-intern data structure. The bounds come from
+a vector dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> – numpy array that contains the new data to write</p></li>
+<li><p><strong>profile</strong> – dictionary including all metadata (rasterio’s profile)</p></li>
+<li><p><strong>ncdf_path</strong> – path to the netcdf file</p></li>
+<li><p><strong>bounds</strong> – boundary (shapely.geometry.polygon.Polygon)     where the new array or the update will take place</p></li>
+<li><p><strong>start_time</strong> – start date (e.g. 2019-12-31)</p></li>
+<li><p><strong>end_time</strong> – end date (e.g. 2019-12-31)</p></li>
+<li><p><strong>array_variable</strong> – Name of the variable within the netcdf group that     represents the raster data in form of an array</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.raster.upsert_by_group">
+<code class="sig-prename descclassname">geoville_storage_gate.raster.</code><code class="sig-name descname">upsert_by_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array</span></em>, <em class="sig-param"><span class="n">profile</span></em>, <em class="sig-param"><span class="n">ncdf_path</span></em>, <em class="sig-param"><span class="n">group</span></em>, <em class="sig-param"><span class="n">start_time</span></em>, <em class="sig-param"><span class="n">end_time</span></em>, <em class="sig-param"><span class="n">array_variable</span><span class="o">=</span><span class="default_value">'raster'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.raster.upsert_by_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds to or updates an existing group within an existing netCDF file.
+The array will be saved with the identifier “array_variable”. The numpy
+array needs to have an axis=0 of the same length than the time range in
+days (start_time - end_time).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> – numpy array that contains the new data to write</p></li>
+<li><p><strong>profile</strong> – dictionary including all metadata (rasterio’s profile)</p></li>
+<li><p><strong>ncdf_path</strong> – path to the netcdf file</p></li>
+<li><p><strong>group</strong> – group name of the netcdf dataset     where the new array or the update will take place</p></li>
+<li><p><strong>start_time</strong> – start date (e.g. 2019-12-31)</p></li>
+<li><p><strong>end_time</strong> – end date (e.g. 2019-12-31)</p></li>
+<li><p><strong>array_variable</strong> – Name of the variable within the netcdf group that     represents the raster data in form of an array</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="vector.html" class="btn btn-neutral float-right" title="Vector" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="netCDF.html" class="btn btn-neutral float-left" title="netCDF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, GeoVille GmbH
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

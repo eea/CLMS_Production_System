@@ -1,0 +1,4 @@
+.idea/*
+__pycache__
+*.pyc
+geoville_ms_logging_modul/config_file/database.ini

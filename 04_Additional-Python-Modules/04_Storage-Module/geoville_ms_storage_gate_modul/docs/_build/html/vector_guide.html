@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to work with vector data &mdash; GeoVille Storage Gate 21.4 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage examples" href="usage_example/usage_examples.html" />
+    <link rel="prev" title="How to work with raster data" href="raster_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #f7d299" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GeoVille Storage Gate
+          
+
+          
+            
+            <img src="_static/storage_gate_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                21.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">GETTING STARTED:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">HOW-TO GUIDES:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ncdf_guide.html">How to work with netCDF files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raster_guide.html">How to work with raster data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to work with vector data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-netcdf-file-or-group">Create a netCDF file or group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upsert-using-the-group-name">Upsert using the group name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upsert-using-bounds">Upsert using bounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-using-a-query">Update using a query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-using-the-group-name">Read using the group name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-using-bounds">Read using bounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-using-a-query">Read using a query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#crop-to-bounds">Crop To Bounds</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">USAGE EXAMPLES:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage_example/usage_examples.html">Usage examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">REFERENCE GUIDE:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="geoville_storage_gate.html">geoville_storage_gate</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GeoVille Storage Gate</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>How to work with vector data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/vector_guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="how-to-work-with-vector-data">
+<h1>How to work with vector data<a class="headerlink" href="#how-to-work-with-vector-data" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>When writing and reading a vector into a netCDF file, there are three options:</dt><dd><ul class="simple">
+<li><p>by using the group name</p></li>
+<li><p>by using a boundary (shapely Polygon)</p></li>
+<li><p>by using a query (e.g. “area”&gt;5000)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="create-a-netcdf-file-or-group">
+<h2>Create a netCDF file or group<a class="headerlink" href="#create-a-netcdf-file-or-group" title="Permalink to this headline">¶</a></h2>
+<p>When writing a vector into a netCDF file or a group that does not exist yet,
+only <code class="docutils literal notranslate"><span class="pre">create_by_group</span></code> can be used. This function creates a netCDF file in
+case it does not exist. Moreover, the defined group will be created before
+the vector gets inserted. Therefore, the group will have the coordinate
+reference system and outer bounds of the vector.</p>
+<p>Many programs that create vector products end by having a GeoDataFrame.</p>
+<p>If that GeoDataFrame gets stored as a Shapefile or another vector file format,
+the module <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> can easily read it as a GeoDataFrame again:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+
+<span class="n">geodataframe</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;example.shp&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we have a GeoDataFrame, we can store it into a netCDF file for the
+first time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">create_by_group</span><span class="p">(</span><span class="n">geodataframe</span><span class="p">,</span>
+               <span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+               <span class="n">group</span><span class="o">=</span><span class="s2">&quot;example_group_name&quot;</span><span class="p">,</span>
+               <span class="n">attributes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;crs&quot;</span><span class="p">:</span> <span class="n">geodataframe</span><span class="o">.</span><span class="n">crs</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Now we created the example netCDF file “example.nc” with the group
+“example_group_name”. This group does contain the GeoDataFrame in form of a
+variable for each vector attribute/column.</p>
+<p>The dictionary “attributes” servers to save the geospatial metadata as group
+attributes. Note that it needs to contain the “crs” (see <a class="reference external" href="https://geopandas.org/reference.html?highlight=crs#geopandas.GeoDataFrame.crs">geopandas-crs</a>).</p>
+</div>
+<div class="section" id="upsert-using-the-group-name">
+<h2>Upsert using the group name<a class="headerlink" href="#upsert-using-the-group-name" title="Permalink to this headline">¶</a></h2>
+<p>After creating a netCDF file and a group, the group can be upserted.
+An “upsert” means that if a geometry already exists, the vector feature will
+get updated, otherwise the feature gets inserted. It is also possible that the
+new geodataframe has a vector attribute/column that does not exist yet.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">upsert_by_group</span><span class="p">(</span><span class="n">geodataframe_for_upsert</span><span class="p">,</span>
+                <span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+                <span class="n">group</span><span class="o">=</span><span class="s2">&quot;example_group_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="upsert-using-bounds">
+<h2>Upsert using bounds<a class="headerlink" href="#upsert-using-bounds" title="Permalink to this headline">¶</a></h2>
+<p>If you want to upsert an area that might intersect several groups,
+you need to use <code class="docutils literal notranslate"><span class="pre">upsert_by_bounds</span></code> as follows. Again, it is possible that the
+new geodataframe has a vector attribute/column that does not exist yet. Not all
+netCDF groups will get this new column, but only the groups that stay in a
+relation to the bounds.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">example_bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mf">661697.166128716</span><span class="p">,</span> <span class="mf">4320223.863762978</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">660697.2823883237</span><span class="p">,</span> <span class="mf">4320130.124662316</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">660603.5432876621</span><span class="p">,</span> <span class="mf">4321296.655692774</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">661738.8279512323</span><span class="p">,</span> <span class="mf">4321234.162958999</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">661697.166128716</span><span class="p">,</span> <span class="mf">4320223.863762978</span><span class="p">]])</span>
+
+<span class="n">upsert_by_bounds</span><span class="p">(</span><span class="n">geodataframe_for_upsert</span><span class="p">,</span>
+                <span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+                <span class="n">bounds</span><span class="o">=</span><span class="n">example_bounds</span><span class="p">,</span>
+                <span class="n">relation_to_bounds</span><span class="o">=</span><span class="s2">&quot;intersects&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For the upsert, we use the same “ncdf_path” as before. The
+“geodataframe_for_update” can be bigger than the bounds, but only
+the data in relation to the bounds (“relation_to_bounds”) will be used for an
+upsert. If “relation_to_bounds” is “intersects” as in our example, all features
+from the “geodataframe_for_update” will be used that intersect the bounds.
+Note that the coordinate reference system (crs) of the bounds you use, has to
+be the same than the crs of the netCDF dataset. In case the bounds intersect
+more than one netCDF group, each of those groups will get upserted respectively
+without changing the dimensions. Thereby, all features of
+“geodataframe_for_update” within the bounds, who’s centroid fall
+within the group bounding box will be upserted in the respective netCDF group.
+The bounding box of a group refers to the outer bounds of all features that
+were written when the group was created (<code class="docutils literal notranslate"><span class="pre">create_by_group</span></code>).</p>
+</div>
+<div class="section" id="update-using-a-query">
+<h2>Update using a query<a class="headerlink" href="#update-using-a-query" title="Permalink to this headline">¶</a></h2>
+<p>Besides upserting a vector with a group name or bounds, you can also query
+features and update them. In this case, it is an update only and no upsert.
+For example, if you want to update the characteristic/vector-attribute “name”
+of all features with an area bigger than 5000 m² to “big”, you can do the
+following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">update_by_attribute</span><span class="p">(</span><span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+                   <span class="n">characteristic</span><span class="o">=</span><span class="s2">&quot;area&quot;</span><span class="p">,</span>
+                   <span class="n">characteristic_value</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                   <span class="n">updated_value</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+                   <span class="n">updated_value</span><span class="o">=</span><span class="s2">&quot;big&quot;</span><span class="p">,</span>
+                   <span class="n">query</span><span class="o">=</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function automatically searches for all queried features in the defined
+netCDF file, independent of the group they are stored in.
+Note that both characteristics (“characteristic” and “updated_characteristic”)
+need to exist already.</p>
+<p>In case a feature shall get <strong>deleted</strong>, you can update it with an empty
+geometry:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">updated_value</span><span class="o">=</span><span class="s2">&quot;geometry&quot;</span>
+<span class="n">updated_value</span><span class="o">=</span><span class="n">wkt</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">Polygon</span><span class="p">([]))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-using-the-group-name">
+<h2>Read using the group name<a class="headerlink" href="#read-using-the-group-name" title="Permalink to this headline">¶</a></h2>
+<p>Reading the vector of an entire netCDF group is as easy as defining the
+path to the netCDF file (“ncdf_path”) and the correct “group” name.
+If we define “characteristics”, we can even limit the returned vector
+attributes. For example, if we only want the name and the geometry, we define:</p>
+<p>characteristics=[“name”, “geometry”]</p>
+<p>However, in our example we use None to automatically get all characteristics.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geodataframe</span> <span class="o">=</span> <span class="n">read_by_group</span><span class="p">(</span><span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+                             <span class="n">group</span><span class="o">=</span><span class="s2">&quot;example_group_name&quot;</span><span class="p">,</span>
+                             <span class="n">characteristics</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As a result we obtain a GeoDataFrame.
+In case we want to write the GeoDataFrame into any other format, such as a
+Shapefile, we can do as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geodataframe</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s2">&quot;example_subset.shp&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-using-bounds">
+<h2>Read using bounds<a class="headerlink" href="#read-using-bounds" title="Permalink to this headline">¶</a></h2>
+<p>If we do not care about the group names or want to have a subset of data that
+can even intersect more than one group, the function <code class="docutils literal notranslate"><span class="pre">read_by_bounds</span></code> can
+be used.</p>
+<p>It is basically the same than <code class="docutils literal notranslate"><span class="pre">read_by_group</span></code> but instead of a group name,
+a shapely Polygon representing a boundary of interest is required. By defining
+the additional “relation_to_bounds” argument, only the features in
+relation to the bounds (“relation_to_bounds”) will be read. If
+“relation_to_bounds” is “intersects” as in our example, all features from the
+netCDF file will be read that intersect the bounds.</p>
+<p>If we define “characteristics”, we can even limit the returned vector
+attributes. For example, if we only want the name and the geometry, we define:</p>
+<p>characteristics=[“name”, “geometry”]</p>
+<p>However, in our example we use None to automatically get all characteristics.
+In case some of the groups that stay in the defined relation to the bounds have
+more vector attributes/columns than the rest, the output geodataframe will
+contain the maximum possible set. Hence, features that miss certain vector
+attributes will have it filled with no-data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">example_bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mf">661697.166128716</span><span class="p">,</span> <span class="mf">4320223.863762978</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">660697.2823883237</span><span class="p">,</span> <span class="mf">4320130.124662316</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">660603.5432876621</span><span class="p">,</span> <span class="mf">4321296.655692774</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">661738.8279512323</span><span class="p">,</span> <span class="mf">4321234.162958999</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mf">661697.166128716</span><span class="p">,</span> <span class="mf">4320223.863762978</span><span class="p">]])</span>
+
+<span class="n">geodataframe</span> <span class="o">=</span> <span class="n">read_by_bounds</span><span class="p">(</span><span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+                              <span class="n">bounds</span><span class="o">=</span><span class="n">example_bounds</span><span class="p">,</span>
+                              <span class="n">characteristics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">relation_to_bounds</span><span class="o">=</span><span class="s2">&quot;intersects&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-using-a-query">
+<h2>Read using a query<a class="headerlink" href="#read-using-a-query" title="Permalink to this headline">¶</a></h2>
+<p>Besides reading a vector with a group name or bounds, you can also read
+features using a specific query. For example, if you want to read all features
+who’s characteristic/vector-attribute “area” is bigger than 5000 m², you can do
+the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">read_by_attribute</span><span class="p">(</span><span class="n">ncdf_path</span><span class="o">=</span><span class="s2">&quot;example.nc&quot;</span><span class="p">,</span>
+                  <span class="n">characteristic</span><span class="o">=</span><span class="s2">&quot;area&quot;</span><span class="p">,</span>
+                  <span class="n">characteristic_value</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                  <span class="n">query</span><span class="o">=</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function automatically searches for all queried features in the defined
+netCDF file, independent of the group they are stored in. Note that a geometry
+cannot be queried.</p>
+</div>
+<div class="section" id="crop-to-bounds">
+<h2>Crop To Bounds<a class="headerlink" href="#crop-to-bounds" title="Permalink to this headline">¶</a></h2>
+<p>Besides reading vector data from and writing vector data into netCDF files,
+the function <code class="docutils literal notranslate"><span class="pre">crop_to_bounds</span></code> enables the user to crop a GeoDataFrame to
+a boundary. This is often helpful after using <code class="docutils literal notranslate"><span class="pre">read_by_bounds</span></code> in order to
+crop the read geometries to the boundary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">example_bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mi">171294</span><span class="p">,</span> <span class="mi">509586</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mi">408599</span><span class="p">,</span> <span class="mi">513476</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mi">308101</span><span class="p">,</span> <span class="mi">224301</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mi">132392</span><span class="p">,</span> <span class="mi">336470</span><span class="p">]])</span>
+<span class="n">cropped_geodataframe</span> <span class="o">=</span> <span class="n">crop_to_bounds</span><span class="p">(</span><span class="n">geodataframe</span><span class="p">,</span>
+                                      <span class="n">bounds</span><span class="o">=</span><span class="n">example_bounds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="usage_example/usage_examples.html" class="btn btn-neutral float-right" title="Usage examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="raster_guide.html" class="btn btn-neutral float-left" title="How to work with raster data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, GeoVille GmbH
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

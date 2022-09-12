@@ -1,0 +1,21 @@
+{% if user %}
+<style>pre{white-space:wrap}</style>
+<div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('bp_logout.logout') }}">Log Out</a>)</div>
+
+{% for client in clients %}
+<pre>
+{{ client.client_info|tojson }}
+{{ client.client_metadata|tojson }}
+</pre>
+<hr>
+{% endfor %}
+
+<br><a href="{{ url_for('bp_create_client.create_client') }}">Create Client</a>
+
+{% else %}
+<form action="" method="post">
+  <input type="text" name="username" placeholder="username">
+  <input type="password" name="password" placeholder="password">
+  <button type="submit">Login / Signup</button>
+</form>
+{% endif %}

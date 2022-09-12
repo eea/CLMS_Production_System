@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  status_manager:
+    build:
+      context: ./services/logger
+      args:
+        - GIT_USER=$GIT_USER
+        - GIT_PW=$GIT_PW
+    container_name: logging_service
+    restart: always
+    command: python logging_service.py
+    env_file:
+      - services/logger/.env
+    volumes:
+      - log_files:/logging_output
+
+volumes:
+  log_files:

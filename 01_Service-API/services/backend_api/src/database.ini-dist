@@ -1,0 +1,13 @@
+[postgresql]
+host=<database_host_address>
+database=<database_name>
+user=<database_user>
+password=<database_password>
+port=<database_port>
+
+[postgresql_oauth]
+host=<database_host_address>
+database=<database_name>
+user=<database_user>
+password=<database_password>
+port=<database_port>

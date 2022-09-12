@@ -1,0 +1,6 @@
+Authlib<0.13
+Flask
+flask-bcrypt
+Flask-SQLAlchemy
+gunicorn
+psycopg2

@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>netCDF &mdash; GeoVille Storage Gate 21.4 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Raster" href="raster.html" />
+    <link rel="prev" title="geoville_storage_gate" href="geoville_storage_gate.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #f7d299" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GeoVille Storage Gate
+          
+
+          
+            
+            <img src="_static/storage_gate_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                21.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">GETTING STARTED:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">HOW-TO GUIDES:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ncdf_guide.html">How to work with netCDF files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="raster_guide.html">How to work with raster data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vector_guide.html">How to work with vector data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">USAGE EXAMPLES:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage_example/usage_examples.html">Usage examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">REFERENCE GUIDE:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="geoville_storage_gate.html">geoville_storage_gate</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">netCDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="raster.html">Raster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vector.html">Vector</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GeoVille Storage Gate</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="geoville_storage_gate.html">geoville_storage_gate</a> &raquo;</li>
+        
+      <li>netCDF</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/netCDF.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-geoville_storage_gate.netCDF">
+<span id="netcdf"></span><h1>netCDF<a class="headerlink" href="#module-geoville_storage_gate.netCDF" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="geoville_storage_gate.netCDF.convert_geotiff_to_netcdf">
+<code class="sig-prename descclassname">geoville_storage_gate.netCDF.</code><code class="sig-name descname">convert_geotiff_to_netcdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gtiff_path</span></em>, <em class="sig-param"><span class="n">ncdf_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.netCDF.convert_geotiff_to_netcdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a GeoTiff file to a netcdf file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gtiff_path</strong> – geotiff path incl. file name</p></li>
+<li><p><strong>ncdf_path</strong> – path to the output netcdf file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.netCDF.delete_netcdf">
+<code class="sig-prename descclassname">geoville_storage_gate.netCDF.</code><code class="sig-name descname">delete_netcdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncdf_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.netCDF.delete_netcdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function deletes a netcdf file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ncdf_path</strong> – Path incl. file name of the netCDF file that will be     deleted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.netCDF.get_group_names">
+<code class="sig-prename descclassname">geoville_storage_gate.netCDF.</code><code class="sig-name descname">get_group_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncdf_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.netCDF.get_group_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list with all the group names within a netcdf file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ncdf_path</strong> – path to a netcdf file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list with all group names within the netcdf file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geoville_storage_gate.netCDF.merge_netcdf_to_data_cube">
+<code class="sig-prename descclassname">geoville_storage_gate.netCDF.</code><code class="sig-name descname">merge_netcdf_to_data_cube</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ncdf_paths</span></em>, <em class="sig-param"><span class="n">ncdf_data_cube</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoville_storage_gate.netCDF.merge_netcdf_to_data_cube" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function merges several netcdf files of the same information and
+spatial extent. The only difference is the timestamp.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ncdf_paths</strong> – list of paths to .nc files</p></li>
+<li><p><strong>ncdf_data_cube</strong> – path to the .nc file that will contain the merge</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="raster.html" class="btn btn-neutral float-right" title="Raster" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="geoville_storage_gate.html" class="btn btn-neutral float-left" title="geoville_storage_gate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, GeoVille GmbH
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

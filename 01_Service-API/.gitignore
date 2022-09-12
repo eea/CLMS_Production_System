@@ -1,0 +1,26 @@
+# PyCharm
+.idea
+
+# Git
+.git
+
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+
+# Virtual environment
+.env/
+.venv/
+venv/
+/venv/
+
+# Senesitive data
+*.ini
+.env
+*.crt
+*.key
