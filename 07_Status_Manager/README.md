@@ -1,4 +1,5 @@
-# The GeoVille CLC+ status manager based on Python
+# Status Manager
+Todo ...
 
 ---
 

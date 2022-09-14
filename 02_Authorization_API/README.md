@@ -1,4 +1,5 @@
-# The GeoVille CLC+ OAuth2 server based on Python
+## Authorization API
+The GeoVille CLC+ OAuth2 server based on Python
 
 ---
 

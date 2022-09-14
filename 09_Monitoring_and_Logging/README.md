@@ -1,4 +1,5 @@
-# The GeoVille CLC+ Logger based on Python
+## Monitoring and Logging
+CLC+ Logger based on Python
 
 ---
 
