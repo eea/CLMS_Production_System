@@ -17,6 +17,10 @@
  under the License.
 -->
 
+## Contributors
+* Samuel Carraro
+* Johannes Schmid
+
 # Apache Airflow
 
 [![PyPI version](https://badge.fury.io/py/apache-airflow.svg)](https://badge.fury.io/py/apache-airflow)

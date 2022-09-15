@@ -8,7 +8,6 @@ Python based logger and Grafana configurations
 * Rafael Reder
 
 ## Logging
-
 * Saving log messages to a database
 * Reading log messages from a RabbitMQ
 

@@ -1,9 +1,10 @@
 # Status Manager
-Todo ...
 
 ---
 
-## What it offers
+## Contributors
+* Johannes Schmid
+* Girtler Florian
 
-* Automatically sends status emails
-* Provides information about the processing status of jobs
+## General Description
+TODO ...

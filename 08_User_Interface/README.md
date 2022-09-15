@@ -1,5 +1,11 @@
 ## User Interface
-Todo ...
 
 ---
+
+## Contributors
+* Johannes Schmid
+* Patrick Wolf
+
+## General Description
+TODO ...
 

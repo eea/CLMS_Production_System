@@ -2,6 +2,9 @@
 
 ---
 
+## Contributors
+* Michel Schwandner
+
 ## General Description
 User authentication, authorization and management are based on the OAuth2 framework. It is used to
 exchange data between client and server through authorization. The OAuth 2.0 authorization framework
@@ -18,10 +21,7 @@ authorization server comes with a PostgreSQL database for managing users, client
 access tokens. The API of the authorization server provides a set of endpoints which are required to perform
 common authorization operations and flows. Scopes define which services a user has access to.
 
----
-
 ## What it offers
-
 * Authorisation and authentication
 * Token generation
 * Creating OAuth clients
