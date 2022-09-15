@@ -1,5 +1,5 @@
 # Monitoring and Logging
-CLC+ Logger based on Python
+Python based logger and Grafana configurations
 
 ---
 
