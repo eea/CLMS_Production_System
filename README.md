@@ -8,31 +8,29 @@ This repository provides all components, descriptions, configurations, sources a
 Product specification and user manual
 
 #### 2. Authorization API
-CLC+ OAuth2 server based on Python
+OAuth2 server based on Python for user authorization
 
-#### 3. Service_API
-CLC+ API based on Python
+#### 3. Service and Data Dissemination API 
+Python based API for triggering the production of the raster and vector products  
+Python based API for data dissemination
 
 #### 4. Airflow
-Apache Airflow configuration
+Apache Airflow installation and configuration
 
 #### 5. Airflow DAGs
-Source codes of the Airflow DAGs
+Source codes of the Airflo wDirected Acyclic Graphs (DAGs)
 
 #### 6. Database
-Database DDL files and models
+Database DDL files and database models
 
 #### 7. Status Manager
-Status manager service sources
+Source code of the status manager service
 
 #### 8. User Interface
-Vue.js based frontend sources
+Vue.js based frontend for the communication with thg service API 
 
 #### 9. Monitoring & Logging
 Grafana dashboards and logging techniques
 
-#### 10. Data Dissemination API (backend)
-API to provide data
-
 #### 11. Additional Python Modules
-Sources of helper functions and modules
+Source code of helper functions and modules
