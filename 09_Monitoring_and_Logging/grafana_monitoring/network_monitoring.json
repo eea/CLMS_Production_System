@@ -1,0 +1,1120 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Dashboard to view multiple servers",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": 1856,
+    "graphTooltip": 2,
+    "id": 25,
+    "iteration": 1663246418840,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "editable": true,
+        "error": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "grid": {},
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 13,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "9.0.1",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_load1{instance=~\"$node\"})",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "load1",
+            "metric": "node_load1",
+            "refId": "A",
+            "step": 40,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_load5{instance=~\"$node\"})",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "load5",
+            "metric": "node_load5",
+            "refId": "B",
+            "step": 40,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_load15{instance=~\"$node\"})",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "load15",
+            "metric": "node_load15",
+            "refId": "C",
+            "step": 40,
+            "target": ""
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Load",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "editable": true,
+        "error": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "grid": {},
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 12,
+        "legend": {
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "9.0.1",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "/.*in/",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_network_receive_bytes_total{device=~\"$device\",instance=~\"$node\"}[3m]))",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "in",
+            "metric": "",
+            "refId": "A",
+            "step": 60,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_network_transmit_bytes_total{device=~\"$device\",instance=~\"$node\"}[3m]))",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "out",
+            "refId": "B",
+            "step": 60
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Network Traffic",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "bits in (-) / bits out (+)",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": true,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "editable": true,
+        "error": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "grid": {},
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 25,
+        "legend": {
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "show": true,
+          "total": true,
+          "values": true
+        },
+        "lines": false,
+        "linewidth": 2,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "9.0.1",
+        "pointradius": 1,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "/.*in/",
+            "transform": "negative-Y"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(increase(node_network_receive_bytes_total{device=~\"$device\",instance=~\"$node\"}[1m]))",
+            "interval": "5m",
+            "intervalFactor": 2,
+            "legendFormat": "in",
+            "metric": "",
+            "refId": "A",
+            "step": 600,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(increase(node_network_transmit_bytes_total{device=~\"$device\",instance=~\"$node\"}[1m]))",
+            "hide": false,
+            "interval": "5m",
+            "intervalFactor": 2,
+            "legendFormat": "out",
+            "refId": "B",
+            "step": 600
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Network Utillization",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "bits in (-) / bits out (+)",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "rgb(31, 120, 193)",
+              "mode": "fixed"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 12,
+          "x": 0,
+          "y": 14
+        },
+        "hideTimeOverride": false,
+        "id": 26,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "max"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(increase(node_network_receive_bytes_total{device=~\"$device\",instance=~\"$node\"}[24h]))",
+            "interval": "",
+            "intervalFactor": 2,
+            "refId": "A",
+            "step": 600
+          }
+        ],
+        "title": "Traffic In",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "rgb(31, 120, 193)",
+              "mode": "fixed"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 12,
+          "x": 12,
+          "y": 14
+        },
+        "id": 27,
+        "links": [],
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "max"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(increase(node_network_transmit_bytes_total{device=~\"$device\",instance=~\"$node\"}[24h]))",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "",
+            "refId": "A",
+            "step": 600
+          }
+        ],
+        "title": "Traffic Out",
+        "type": "stat"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "editable": true,
+        "error": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "grid": {},
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "hiddenSeries": false,
+        "id": 21,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "9.0.1",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_netstat_Tcp_CurrEstab{instance=~\"$node\"})",
+            "intervalFactor": 2,
+            "legendFormat": "established",
+            "metric": "node_netstat_Tcp_CurrEstab",
+            "refId": "A",
+            "step": 40,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_netstat_Tcp_ActiveOpens{instance=~\"$node\"})",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "activeOpens",
+            "metric": "node_netstat_Tcp_ActiveOpens",
+            "refId": "B",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_netstat_Tcp_PassiveOpens{instance=~\"$node\"})",
+            "intervalFactor": 2,
+            "legendFormat": "passiveOpens",
+            "metric": "node_netstat_Tcp_PassiveOpens",
+            "refId": "C",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_netstat_Tcp_EstabResets{instance=~\"$node\"})",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "estabResets",
+            "metric": "node_netstat_Tcp_EstabResets",
+            "refId": "D",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_netstat_Tcp_AttemptFails{instance=~\"$node\"})",
+            "intervalFactor": 2,
+            "legendFormat": "attemptfails",
+            "metric": "node_netstat_Tcp_AttemptFails",
+            "refId": "E",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_netstat_Tcp_RetransSegs{instance=~\"$node\"})",
+            "intervalFactor": 2,
+            "legendFormat": "retransSegs",
+            "metric": "node_netstat_Tcp_RetransSegs",
+            "refId": "F",
+            "step": 40
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Netstat: TCP",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "editable": true,
+        "error": false,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "grid": {},
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 26
+        },
+        "hiddenSeries": false,
+        "id": 23,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "$$hashKey": "object:825",
+            "alias": "/.*Out.*/",
+            "transform": "negative-Y"
+          },
+          {
+            "$$hashKey": "object:826",
+            "alias": "Udp_NoPorts",
+            "yaxis": 2
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_InDatagrams{instance=~\"$node\"}[5m]))",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_InDatagrams",
+            "metric": "node_netstat_Udp_InDatagrams",
+            "refId": "A",
+            "step": 40,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_InErrors{instance=~\"$node\"}[5m]))",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_InErrors",
+            "metric": "node_netstat_Udp_InErrors",
+            "refId": "B",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_OutDatagrams{instance=~\"$node\"}[5m]))",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_OutDatagrams",
+            "metric": "node_netstat_Udp_OutDatagrams",
+            "refId": "C",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_NoPorts{instance=~\"$node\"}[5m]))",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_NoPorts",
+            "metric": "node_netstat_Udp_NoPorts",
+            "refId": "D",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_InCsumErrors{instance=~\"$node\"}[5m]))",
+            "interval": "",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_InCsumErrors",
+            "metric": "node_netstat_Udp_InCsumErrors",
+            "refId": "E",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_RcvbufErrors{instance=~\"$node\"}[5m]))",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_RcvbufErrors",
+            "metric": "node_netstat_Udp_RcvbufErrors",
+            "refId": "F",
+            "step": 40
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(irate(node_netstat_Udp_SndbufErrors{instance=~\"$node\"}[5m]))",
+            "intervalFactor": 2,
+            "legendFormat": "Udp_SndbufErrors",
+            "metric": "node_netstat_Udp_SndbufErrors",
+            "refId": "G",
+            "step": 40
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Netstat: UDP",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:839",
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:840",
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "editable": true,
+        "error": false,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "grid": {},
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 33
+        },
+        "hiddenSeries": false,
+        "id": 24,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "links": [],
+        "nullPointMode": "connected",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_nf_conntrack_entries_limit{instance=~\"$node\"}) - sum(node_nf_conntrack_entries{instance=~\"$node\"})",
+            "intervalFactor": 2,
+            "legendFormat": "free",
+            "metric": "node_nf_conntrack_entries_limit",
+            "refId": "A",
+            "step": 40,
+            "target": ""
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "expr": "sum(node_nf_conntrack_entries_limit{instance=~\"$node\"})",
+            "intervalFactor": 2,
+            "legendFormat": "limit",
+            "metric": "node_nf_conntrack_entries_limit",
+            "refId": "B",
+            "step": 40
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Conntrack",
+        "tooltip": {
+          "msResolution": false,
+          "shared": true,
+          "sort": 0,
+          "value_type": "cumulative"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": [
+      "node",
+      "network"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "EpJ_XkmGk"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "multi": false,
+          "name": "node",
+          "options": [],
+          "query": {
+            "query": "label_values(node_boot_time_seconds, instance)",
+            "refId": "Prometheus-node-Variable-Query"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "EpJ_XkmGk"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "multi": false,
+          "name": "device",
+          "options": [],
+          "query": {
+            "query": "label_values(node_network_receive_bytes_total, device)",
+            "refId": "Prometheus-device-Variable-Query"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 1,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now/d",
+      "to": "now"
+    },
+    "timepicker": {
+      "now": true,
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Node - Network Overview",
+    "uid": "MBRTkBRZk",
+    "version": 2,
+    "weekStart": ""
+  }

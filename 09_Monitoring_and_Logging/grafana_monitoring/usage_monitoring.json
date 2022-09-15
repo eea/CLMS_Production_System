@@ -1,0 +1,905 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 18,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "index": 1,
+                  "value": 1000
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "links": [],
+        "options": {
+          "displayMode": "gradient",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\tc.first_name || ' ' || c.last_name ,\r\n\tcount(*)\r\nfrom\r\n\tcustomer.service_orders so ,\r\n\tcustomer.services s,\r\n\tcustomer.customer c\r\nwhere\r\n\ts.service_id = so.service_id\r\n\tand so.customer_id = c.customer_id\r\n\tand status is not null\r\n\tand so.order_received >'2021-04-26 13:10'\r\ngroup by\r\n\t1\r\norder by\r\n\t2 desc;\r\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Requests by User",
+        "transparent": true,
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 12
+        },
+        "id": 4,
+        "links": [],
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": false
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\ts.service_name,\r\n\tcount(*)\r\nfrom\r\n\tcustomer.service_orders so ,\r\n\tcustomer.services s\r\nwhere\r\n\ts.service_id = so.service_id\r\n\tand so.order_received >'2021-04-26 13:10'\r\ngroup by\r\n\t1\r\norder by\r\n\t2 desc;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Requests by Service",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "max": 750,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "index": 1,
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "m"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        },
+        "id": 7,
+        "links": [],
+        "options": {
+          "displayMode": "lcd",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\ts.service_name,\r\n\tavg(extract(epoch from (so.order_stopped - so.order_received ))/ 60.0) as duration\r\nfrom\r\n\tcustomer.service_orders so ,\r\n\tcustomer.services s\r\nwhere\r\n\ts.service_id = so.service_id\r\n\tand so.success is true\r\n\tand (so.order_stopped - so.order_started ) is not null\r\n\tand order_received > '2021-04-26 13:10'\r\n  group by\r\n\t1\r\norder by\r\n\t1;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Mean duration for successful orders",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "max": 750,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "index": 1,
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "parallel"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 24
+        },
+        "id": 8,
+        "links": [],
+        "options": {
+          "displayMode": "lcd",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\ts.service_name,\r\n\tcount(*) as anzahl\r\nfrom\r\n\tcustomer.service_orders so, customer.services s \r\nwhere\r\n\tstatus in ('RUNNING')\r\n\tand so.service_id = s.service_id\r\n\tand order_received > '2021-04-26 13:10'\r\ngroup by\r\n\t1",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Current parallel executions of services",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {},
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "max": 750,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0
+                },
+                {
+                  "color": "green",
+                  "index": 1,
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "d"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 31
+        },
+        "id": 9,
+        "links": [],
+        "options": {
+          "displayMode": "lcd",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\ts.service_name,\r\n\tavg(extract(epoch from (so.order_stopped - so.order_received ))/ (60.0 * 60.0 * 24)) * daten.anzahl / daten_parallel.anzahl_parallel as eta\r\nfrom\r\n\tcustomer.service_orders so ,\r\n\tcustomer.services s,\r\n\t(\r\n\tselect\r\n\t\tservice_id,\r\n\t\tcount(*) as anzahl\r\n\tfrom\r\n\t\tcustomer.service_orders so\r\n\twhere\r\n\t\tstatus in ('RECEIVED', 'QUEUED')\r\n\t\tand order_received > '2021-04-26 13:10'\r\n\tgroup by\r\n\t\t1) as daten,\r\n\t(\r\n\tselect\r\n\t\tservice_id,\r\n\t\tcount(*) as anzahl_parallel\r\n\tfrom\r\n\t\tcustomer.service_orders so\r\n\twhere\r\n\t\tstatus in ('RUNNING')\r\n\t\t\tand order_received > '2021-04-26 13:10'\r\n\t\tgroup by\r\n\t\t\t1) as daten_parallel\r\nwhere\r\n\ts.service_id = so.service_id\r\n\tand daten_parallel.service_id = so.service_id\r\n\tand daten.service_id = so.service_id\r\n\tand so.success is true\r\n\tand (so.order_stopped - so.order_started ) is not null\r\n\tand order_received > '2021-04-26 13:10'\r\ngroup by\r\n\ts.service_name,\r\n\tdaten.anzahl,\r\n\tdaten_parallel.anzahl_parallel\r\norder by\r\n\t1;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "ETA in days for current orders",
+        "type": "bargauge"
+      },
+      {
+        "Aggregate": "last",
+        "BarPadding": 10,
+        "BaseLineColor": "#ff0000",
+        "BaseLineWidth": 1,
+        "CurveType": "Monotone",
+        "DateFormat": "YYYY-MM-DD HH:mm:ss",
+        "DateTimeColName": "date",
+        "DotColor": "white",
+        "DotSize": 10,
+        "EvenRowColor": "rgba(61, 61, 64, 0.78)",
+        "FlashHighLimitBar": false,
+        "FlashLowLimitBar": false,
+        "GroupColName": "status",
+        "GroupCols": 0,
+        "GroupGap": 5,
+        "GroupLabelColor": "#ffffff",
+        "GroupLabelFontSize": "100%",
+        "GroupNameFilter": "",
+        "GroupSortString": "",
+        "HighAxisColor": "#ffffff",
+        "HighAxisWidth": 1,
+        "HighBarColor": "rgb(120, 128, 0)",
+        "HighLimitBarColor": "#ff0000",
+        "HighLimitBarFlashColor": "#ffa500",
+        "HighLimitBarFlashTimeout": 1000,
+        "HighLimitLineColor": "#ff0000",
+        "HighLmitLineWidth": 1,
+        "Horizontal": false,
+        "LabelColName": "service_name",
+        "LabelColor": "#ffffff",
+        "LabelFontSize": "100%",
+        "LabelNameFilter": "",
+        "LableAngle": 90,
+        "LineColor": "blue",
+        "LineWidth": 5,
+        "Links": [],
+        "LowAxisColor": "#ffffff",
+        "LowAxisWidth": 1,
+        "LowBarColor": "teal",
+        "LowLimitBarColor": "#ff0000",
+        "LowLimitBarFlashColor": "#ffa500",
+        "LowLimitBarFlashTimeout": 200,
+        "LowLimitLineColor": "#ff0000",
+        "LowLmitLineWidth": 1,
+        "LowSideMargin": 22,
+        "MaxLineColor": "rgb(74, 232, 12)",
+        "MaxLineWidth": 1,
+        "MinLineColor": "#ff0000",
+        "MinLineWidth": 1,
+        "OddRowColor": "rgba(33, 33, 34, 0.92)",
+        "OutOfRangeLabelColor": "#ffffff",
+        "OutlineColor": "rgba(245, 255, 0, 0.1)",
+        "RecolorHighLimitBar": false,
+        "RecolorLowLimitBar": false,
+        "RecolorRules": [],
+        "ScaleFactor": 1,
+        "ShowBars": true,
+        "ShowBaseLine": false,
+        "ShowDate": false,
+        "ShowGroupLabels": true,
+        "ShowHighLimitLine": false,
+        "ShowLabels": true,
+        "ShowLeftAxis": true,
+        "ShowLines": false,
+        "ShowLowLimitLine": false,
+        "ShowMaxLine": false,
+        "ShowMinLine": false,
+        "ShowRightAxis": true,
+        "ShowTooltips": true,
+        "ShowValues": true,
+        "SortColName": "value",
+        "SortDirection": "ascending",
+        "TZOffsetHours": 0,
+        "TooltipDateFormat": "YYYY-MM-DD HH:mm:ss",
+        "ValueColName": "count",
+        "ValueColor": "#ffffff",
+        "ValueDecimals": 2,
+        "ValueFontSize": "100%",
+        "ValuePosition": "top",
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {},
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0
+                },
+                {
+                  "color": "orange",
+                  "index": 1,
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 37
+        },
+        "id": 6,
+        "links": [],
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n  s.service_name,\r\n\tso.status ,\r\n\tcount(*)\r\nfrom\r\n\tcustomer.service_orders so ,\r\n\tcustomer.services s\r\nwhere\r\n\ts.service_id = so.service_id\r\n\tand status is not null\r\n\tand so.order_received >'2021-04-26 13:10'\r\n\tand status not in ('FAILED','INVALID','SUCCESS')\r\n\tand current_timestamp - order_received <'10 days'::interval\r\ngroup by\r\n\t1,2\r\norder by\r\n\t1 desc;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Service Status",
+        "type": "michaeldmoore-multistat-panel"
+      },
+      {
+        "Aggregate": "last",
+        "BarPadding": 10,
+        "BaseLineColor": "#ff0000",
+        "BaseLineWidth": 1,
+        "CurveType": "Monotone",
+        "DateFormat": "YYYY-MM-DD HH:mm:ss",
+        "DateTimeColName": "date",
+        "DotColor": "white",
+        "DotSize": 10,
+        "EvenRowColor": "rgba(61, 61, 64, 0.78)",
+        "FlashHighLimitBar": false,
+        "FlashLowLimitBar": false,
+        "GroupColName": "status",
+        "GroupCols": 0,
+        "GroupGap": 5,
+        "GroupLabelColor": "#ffffff",
+        "GroupLabelFontSize": "100%",
+        "GroupNameFilter": "",
+        "GroupSortString": "",
+        "HighAxisColor": "#ffffff",
+        "HighAxisWidth": 1,
+        "HighBarColor": "rgb(120, 128, 0)",
+        "HighLimitBarColor": "#ff0000",
+        "HighLimitBarFlashColor": "#ffa500",
+        "HighLimitBarFlashTimeout": 1000,
+        "HighLimitLineColor": "#ff0000",
+        "HighLmitLineWidth": 1,
+        "Horizontal": false,
+        "LabelColName": "service_name",
+        "LabelColor": "#ffffff",
+        "LabelFontSize": "100%",
+        "LabelNameFilter": "",
+        "LableAngle": 90,
+        "LineColor": "blue",
+        "LineWidth": 5,
+        "Links": [],
+        "LowAxisColor": "#ffffff",
+        "LowAxisWidth": 1,
+        "LowBarColor": "teal",
+        "LowLimitBarColor": "#ff0000",
+        "LowLimitBarFlashColor": "#ffa500",
+        "LowLimitBarFlashTimeout": 200,
+        "LowLimitLineColor": "#ff0000",
+        "LowLmitLineWidth": 1,
+        "LowSideMargin": 22,
+        "MaxLineColor": "rgb(74, 232, 12)",
+        "MaxLineWidth": 1,
+        "MinLineColor": "#ff0000",
+        "MinLineWidth": 1,
+        "OddRowColor": "rgba(33, 33, 34, 0.92)",
+        "OutOfRangeLabelColor": "#ffffff",
+        "OutlineColor": "rgba(245, 255, 0, 0.1)",
+        "RecolorHighLimitBar": false,
+        "RecolorLowLimitBar": false,
+        "RecolorRules": [],
+        "ScaleFactor": 1,
+        "ShowBars": true,
+        "ShowBaseLine": false,
+        "ShowDate": false,
+        "ShowGroupLabels": true,
+        "ShowHighLimitLine": false,
+        "ShowLabels": true,
+        "ShowLeftAxis": true,
+        "ShowLines": false,
+        "ShowLowLimitLine": false,
+        "ShowMaxLine": false,
+        "ShowMinLine": false,
+        "ShowRightAxis": true,
+        "ShowTooltips": true,
+        "ShowValues": true,
+        "SortColName": "value",
+        "SortDirection": "ascending",
+        "TZOffsetHours": 0,
+        "TooltipDateFormat": "YYYY-MM-DD HH:mm:ss",
+        "ValueColName": "count",
+        "ValueColor": "#ffffff",
+        "ValueDecimals": 2,
+        "ValueFontSize": "100%",
+        "ValuePosition": "top",
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {},
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0
+                },
+                {
+                  "color": "orange",
+                  "index": 1,
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 49
+        },
+        "id": 11,
+        "links": [],
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n  s.service_name,\r\n\tso.status ,\r\n\tcount(*)\r\nfrom\r\n\tcustomer.service_orders so ,\r\n\tcustomer.services s\r\nwhere\r\n\ts.service_id = so.service_id\r\n\tand status is not null\r\n\tand so.order_received >'2021-04-26 13:10'\r\n\tand status in ('FAILED','INVALID','SUCCESS')\r\ngroup by\r\n\t1,2\r\norder by\r\n\t1 desc;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Service Status",
+        "type": "michaeldmoore-multistat-panel"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "description": "\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {},
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0
+                },
+                {
+                  "color": "orange",
+                  "index": 1,
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 61
+        },
+        "id": 10,
+        "links": [],
+        "options": {
+          "showHeader": true
+        },
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\t*\r\nfrom\r\n\tcustomer.service_orders so\r\nwhere\r\n\t--order_received > '2021-04-26 15:00:00'\r\n\tstatus = 'FAILED'\r\n\torder by order_received desc\r\n\tlimit 100;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Last 100 Failed Services",
+        "type": "table"
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "CLCPlus Usage",
+    "uid": "xOECEGgGz",
+    "version": 20,
+    "weekStart": ""
+  }

@@ -1,0 +1,785 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 19,
+    "iteration": 1663246324788,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "EpJ_XkmGk"
+        },
+        "description": "",
+        "gridPos": {
+          "h": 4,
+          "w": 3,
+          "x": 0,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "content": "<span style=\"color:Whitehite\">Not started yet (-2)</span>\n<br>\n<span style=\"color:Red\">Failed (-1)</span>\n<br>\n<span style=\"color:Yellow\">Received, Queued, Running (0)</span>\n<br>\n<span style=\"color:Green\">Success (1)</span>\n",
+          "mode": "html"
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "EpJ_XkmGk"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Legend",
+        "type": "text"
+      },
+      {
+        "circleMaxSize": "6",
+        "circleMinSize": "1",
+        "colors": [
+          "rgb(255, 255, 255)",
+          "#C4162A",
+          "#FFEE52",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "decimals": 2,
+        "esMetric": "Count",
+        "gridPos": {
+          "h": 23,
+          "w": 21,
+          "x": 3,
+          "y": 0
+        },
+        "hideEmpty": false,
+        "hideZero": false,
+        "id": 2,
+        "initialZoom": "6",
+        "locationData": "table",
+        "mapCenter": "Europe",
+        "mapCenterLatitude": 46,
+        "mapCenterLongitude": 14,
+        "maxDataPoints": 1,
+        "mouseWheelZoom": true,
+        "showLegend": false,
+        "stickyLabels": false,
+        "tableQueryOptions": {
+          "geohashField": "geohash",
+          "labelField": "name",
+          "latitudeField": "latitude",
+          "longitudeField": "longitude",
+          "metricField": "metric",
+          "queryType": "coordinates"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcri.cellcode as name,\n\tST_Y(ST_Transform(cri.geom, 4326)) as latitude,\n\tST_X(ST_Transform(cri.geom, 4326)) as longitude,\n\tMAX(case when '[[task]]' = 'main' and mar.order_status = 'FAILED' then -1 when '[[task]]' = 'main' and (mar.order_status = 'RUNNING' or mar.order_status = 'RECEIVED' or mar.order_status = 'QUEUED') then 0 when '[[task]]' = 'main' and mar.order_status = 'SUCCESS' then 1 when '[[task]]' != 'main' and mar.task_status = 'FAILED' then -1 when '[[task]]' != 'main' and (mar.task_status = 'RUNNING' or mar.task_status = 'RECEIVED' or mar.task_status = 'QUEUED') then 0 when '[[task]]' != 'main' and mar.task_status = 'SUCCESS' then 1 else -2 end) as value,\n\tMAX(case when '[[task]]' = 'main' and mar.order_status = 'FAILED' then -1 when '[[task]]' = 'main' and (mar.order_status = 'RUNNING' or mar.order_status = 'RECEIVED' or mar.order_status = 'QUEUED') then 0 when '[[task]]' = 'main' and mar.order_status = 'SUCCESS' then 1 when '[[task]]' != 'main' and mar.task_status = 'FAILED' then -1 when '[[task]]' != 'main' and (mar.task_status = 'RUNNING' or mar.task_status = 'RECEIVED' or mar.task_status = 'QUEUED') then 0 when '[[task]]' != 'main' and mar.task_status = 'SUCCESS' then 1 else -2 end) as metric\nfrom\n\tgrafana_monitoring.europe_10km_eea39_centroids cri left outer join\n\t(select * from customer.manual_and_automatic_requests where service_name = '[[service]]' and (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))) as mar on (cri.cellcode=mar.cellcode)\ngroup by\n\tcri.geom,\n\tname",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": "-1, 0, 1",
+        "title": "Processing Status",
+        "type": "grafana-worldmap-panel",
+        "unitPlural": "",
+        "unitSingle": "",
+        "valueName": "total"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 1,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(255, 255, 255)",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 50
+                },
+                {
+                  "color": "dark-green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 19,
+          "w": 3,
+          "x": 0,
+          "y": 4
+        },
+        "id": 4,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcase when '[[task]]'='main' then 100/571200. * COUNT(order_status) else 100/571200. * COUNT(task_status) end as success\nfrom\n\tcustomer.manual_and_automatic_requests\nwhere\n\tservice_name = '[[service]]'\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n\tand (('[[task]]' = 'main' and order_status = 'SUCCESS') or ('[[task]]' != 'main' and task_status ='SUCCESS'))",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcase when '[[task]]'='main' then 100/571200. * COUNT(order_status) else 100/571200. * COUNT(task_status) end as failed\nfrom\n\tcustomer.manual_and_automatic_requests\nwhere\n\tservice_name = '[[service]]'\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n\tand (('[[task]]' = 'main' and order_status = 'FAILED') or ('[[task]]' != 'main' and task_status ='FAILED'))",
+            "refId": "B",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcase when '[[task]]'='main' then 100/571200. * COUNT(order_status) else 100/571200. * COUNT(task_status) end as running\nfrom\n\tcustomer.manual_and_automatic_requests\nwhere\n\tservice_name = '[[service]]'\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n\tand (('[[task]]' = 'main' and order_status = 'RUNNING') or ('[[task]]' != 'main' and task_status ='RUNNING'))",
+            "refId": "C",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcase when '[[task]]'='main' then 100/571200. * COUNT(order_status) else 100/571200. * COUNT(task_status) end as queued\nfrom\n\tcustomer.manual_and_automatic_requests\nwhere\n\tservice_name = '[[service]]'\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n\tand (('[[task]]' = 'main' and order_status = 'QUEUED') or ('[[task]]' != 'main' and task_status ='QUEUED'))",
+            "refId": "D",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          },
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcase when '[[task]]'='main' then 100/571200. * COUNT(order_status) else 100/571200. * COUNT(task_status) end as received\nfrom\n\tcustomer.manual_and_automatic_requests\nwhere\n\tservice_name = '[[service]]'\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n\tand (('[[task]]' = 'main' and order_status = 'RECEIVED') or ('[[task]]' != 'main' and task_status ='RECEIVED'))",
+            "refId": "E",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Progress (%)",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "displayName": "$__cell_0",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "semi-dark-yellow",
+                  "value": 1000
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 23
+        },
+        "id": 8,
+        "options": {
+          "displayMode": "lcd",
+          "minVizHeight": 10,
+          "minVizWidth": 0,
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "9.0.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\tcase when '[[task]]'='main' then order_username else task_username end as username,\r\n\tcount(*)\r\nfrom\r\n\tcustomer.manual_and_automatic_requests\r\nwhere\r\n\tservice_name = '[[service]]'\r\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\r\n\tand (('[[task]]' = 'main' and order_status is not null) or ('[[task]]' != 'main' and task_status is not null))\r\ngroup by\r\n\t1\r\norder by\r\n\t2 desc;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Request by User",
+        "transparent": true,
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "semi-dark-yellow",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 31
+        },
+        "id": 10,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": false
+        },
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n\tcount(*)\nfrom\n\tcustomer.manual_and_automatic_requests\nwhere\n\tservice_name = '[[service]]'\n\tand (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n\tand (('[[task]]' = 'main' and order_status is not null) or ('[[task]]' != 'main' and task_status is not null))",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Number of Requests",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "max": 750,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "green",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "m"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 31
+        },
+        "id": 12,
+        "options": {
+          "displayMode": "lcd",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true
+        },
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\r\n\tservice_name,\r\n\tcase when '[[task]]'='main' then avg(extract(epoch from (order_stopped - order_started ))/ 60.0)\r\n\telse avg(extract(epoch from (task_stopped - task_started ))/ 60.0) end as duration\r\nfrom\r\n\tcustomer.manual_and_automatic_requests\r\nwhere\r\n  service_name='[[service]]'\r\n  and (('[[task]]' = 'main' and order_status = 'SUCCESS') or ('[[task]]' != 'main' and task_status = 'SUCCESS'))\r\n\tand (('[[task]]' = 'main' and order_status is not null) or ('[[task]]' != 'main' and task_status is not null))\r\n--\tand (so.order_stopped - so.order_started ) is not null\r\n--\tand so.order_started > '2020-05-13'\r\ngroup by\r\n\t1\r\norder by\r\n\t1;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Mean duration for successful tasks",
+        "type": "bargauge"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "IAlDnP5Gz"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "displayMode": "color-background"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "-1": {
+                    "text": "error"
+                  },
+                  "-2": {
+                    "text": "success"
+                  },
+                  "-3": {
+                    "text": "running"
+                  },
+                  "-4": {
+                    "text": "received"
+                  },
+                  "-5": {
+                    "text": "queued"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(0, 0, 0)"
+                },
+                {
+                  "color": "light-yellow",
+                  "value": -5
+                },
+                {
+                  "color": "rgb(143, 141, 140)",
+                  "value": -4
+                },
+                {
+                  "color": "light-green",
+                  "value": -3
+                },
+                {
+                  "color": "dark-green",
+                  "value": -2
+                },
+                {
+                  "color": "dark-red",
+                  "value": -1
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 39
+        },
+        "id": 14,
+        "options": {
+          "showHeader": true
+        },
+        "pluginVersion": "7.0.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "IAlDnP5Gz"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n  cellcode,\n  order_id,\n  case when '[[task]]'='main' then order_username else task_username end as username,\n  case when '[[task]]'='main' then order_received else task_started end as received,\n  case when '[[task]]'='main' then order_started else task_started end as started,\n  case when '[[task]]'='main' then order_stopped else task_stopped end as stopped,\n  case\n\t\twhen '[[task]]'='main' and order_status = 'FAILED' then -1\n\t\twhen '[[task]]'='main' and order_status = 'SUCCESS' then -2\n\t\twhen '[[task]]'='main' and order_status = 'RUNNING' then -3\n\t\twhen '[[task]]'='main' and order_status = 'RECEIVED' then -4\n\t\twhen '[[task]]'='main' and order_status = 'QUEUED' then -5\n\t\t\n\t\twhen '[[task]]'!='main' and task_status = 'FAILED' then -1\n\t\twhen '[[task]]'!='main' and task_status = 'SUCCESS' then -2\n\t\twhen '[[task]]'!='main' and task_status = 'RUNNING' then -3\n\t\twhen '[[task]]'!='main' and task_status = 'RECEIVED' then -4\n\t\twhen '[[task]]'!='main' and task_status = 'QUEUED' then -5\n\tend as status,\n\tcase when '[[task]]'='main' then order_json end as order_json\n  \nfrom\n  customer.manual_and_automatic_requests\nwhere\n  service_name='[[service]]'\n  and (('[[task]]' = 'main') or ('[[task]]' != 'main' and task_name = '[[task]]'))\n  and (('[[task]]' = 'main' and order_status is not null) or ('[[task]]' != 'main' and task_status is not null))\nORDER by\n  started desc",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Customer Jobs",
+        "transparent": true,
+        "type": "table"
+      }
+    ],
+    "schemaVersion": 36,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "harmonics",
+            "value": "harmonics"
+          },
+          "datasource": {
+            "type": "postgres",
+            "uid": "IAlDnP5Gz"
+          },
+          "definition": "select service_name from customer.services where service_name!='logger' and  service_name!='state'",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "service",
+          "options": [],
+          "query": "select service_name from customer.services where service_name!='logger' and  service_name!='state'",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "main",
+            "value": "main"
+          },
+          "datasource": {
+            "type": "postgres",
+            "uid": "IAlDnP5Gz"
+          },
+          "definition": "select task_name from customer.tasks union select 'main' as task_name",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "task",
+          "options": [],
+          "query": "select task_name from customer.tasks union select 'main' as task_name",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "CLC+ Backbone - Processing Status",
+    "uid": "NJACfMAMz",
+    "version": 125,
+    "weekStart": ""
+  }
