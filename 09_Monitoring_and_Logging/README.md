@@ -30,6 +30,8 @@ Please note that the environment variable listed below are required:
 
 ## Acknowledgement
 * Author: Wolf Patrick
-* Date: 2019-10-05
+* Date: 2022-09-05
 * Version 19.10.2
 
+## Grafana monitoring system configuration
+The grafana monitoring configuration files can be imported into a fresh grafana instance to monitor a processing system. A working datasource configuration is required.
