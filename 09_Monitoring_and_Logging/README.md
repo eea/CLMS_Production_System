@@ -1,14 +1,18 @@
-## Monitoring and Logging
+# Monitoring and Logging
 CLC+ Logger based on Python
 
 ---
 
-## What it offers
+## Contributors
+* Patrick Wolf
+* Rafael Reder
+
+## Logging
 
 * Saving log messages to a database
 * Reading log messages from a RabbitMQ
 
-## Module description
+### Module description
 The geoville_ms_logging_sever reads messages from the logging queue and stores the messages periodically into
 a database. In order to interrupt the program, please press CTRL+C. Since the program send data periodically to the
 database, the duration_in_sec parameter is required. This parameter specifies how often (in seconds) the saver
@@ -23,15 +27,9 @@ Please note that the environment variable listed below are required:
     - RABBIT_MQ_PASSWORD: RabbitMQ username
     - RABBIT_MQ_VHOST: RabbitMQ virtual host
 
-## Dependencies
+### Dependencies
 * GeoVille_MS_RabbitMQ_Modul
 * GeoVille_MS_Database_Modul
-
-
-## Acknowledgement
-* Author: Wolf Patrick
-* Date: 2022-09-05
-* Version 19.10.2
 
 ## Grafana monitoring system configuration
 The grafana monitoring configuration files can be imported into a fresh grafana instance to monitor a processing system. A working datasource configuration is required.
