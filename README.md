@@ -32,5 +32,5 @@ Vue.js based frontend for the communication with thg service API
 #### 9. Monitoring & Logging
 Grafana dashboards and logging techniques
 
-#### 11. Additional Python Modules
+#### 10. Additional Python Modules
 Source code of helper functions and modules
