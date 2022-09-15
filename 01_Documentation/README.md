@@ -1,4 +1,2 @@
 ## Documentation
-Todo ...
-
----
+Product specification and user manual
