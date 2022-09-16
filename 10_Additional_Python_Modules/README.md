@@ -36,4 +36,24 @@ queue and retrieve messages whenever there are some in the queue
 ---
 
 ## Storage Gate Module
-TODO ...
+The CLC+ Backbone products consist of a large amount of data and require an efficient storage system.
+Hence, it was decided to use netCDF files which are basically HDF5 files for scientific use. HDF stands for
+Hierarchical Data Format. As the name states, the files have an internal data structure. Each HDF5 or netCDF
+file can include several groups and even subgroups. Moreover, additional information on the groups as well
+as on the elements within the groups are stored within the hierarchical data format. One big advantage of
+this format (HDF5 and netCDF) is the memory efficient usage. Data is indexed so that it does not have to be
+loaded into memory until specifically required. Requesting different elements and their metadata is possible
+by using respective tools.
+
+The Python based storage module is used for reading from and writing into netCDF files in various ways. Both
+general geospatial data types; raster and vector data; are supported by this module. While raster data can be read and written by using netCDF groups or a region of interest (shapely Polygon), vector data can also by
+read and written by querying specific attributes (e.g. “area”>5000).
+
+Furthermore, the module provides general functions to obtain the group names of a netCDF file or the
+timestamps of a specific group in case of raster data.
+
+## Product Ingestion
+This module serves as a utility that uploads quality-checked CLC+ Backbone products to netCDF files. The product’s netCDF files can then be accessed via the get_product API in
+https://api.clcplusbackbone.geoville.com/v1/.
+
+The code runs within a docker container. The code mainly consists of commands from the storage gate module.

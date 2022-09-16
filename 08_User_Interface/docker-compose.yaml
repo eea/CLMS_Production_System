@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web_app:
+    container_name: clcplus_frontend
+    build:
+      context: .
+    restart: always
+    ports:
+      - "9001:80"
+    #memory: 1024
