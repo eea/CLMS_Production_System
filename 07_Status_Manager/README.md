@@ -20,9 +20,7 @@ following:
 
 
 The states are being updated by the API (RECEIVED, QUEUED and ABORTED) and by Airflow (RUNNING,
-INVALID, FAILED, SUCCESS). The overall workflow is illustraded in the Figure below.
-
-![alt text](docs/overview_order_status_updating_workflow.png)
+INVALID, FAILED, SUCCESS). 
 
 Updating a status is done by the API gateway, which offers respective routes for Airflow to access. For
 specific status updates such as “SUCCESS”, “INVALID” and “FAILED” an e-mail notification is sent to the user,
