@@ -6,13 +6,13 @@
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
 # applications without licensing by GeoVille GmbH.
 #
-# RabbitMQ message count GEMS API call
+# RabbitMQ message count API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from error_classes.http_error_404.http_error_404 import NotFoundError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import (rabbitmq_host, rabbitmq_management_port, rabbitmq_password, rabbitmq_user,
                                      rabbitmq_virtual_host)
 from init.namespace_constructor import rabbitmq_namespace as api
@@ -60,7 +60,7 @@ class RabbitMQMessageCount(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(200, 'Operation successful', message_count_model)
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -91,34 +91,39 @@ class RabbitMQMessageCount(Resource):
         try:
             cl = Client(f'{rabbitmq_host}:{rabbitmq_management_port}', rabbitmq_user, rabbitmq_password)
 
-            if queue_name not in list_queue_names(cl):
+            new_queue_name = None
+            for filter_item in filter(lambda x: queue_name in x, list_queue_names(cl)):
+                new_queue_name = filter_item
+
+            if new_queue_name is None:
                 error = NotFoundError(f'Specified queue name does not exist: {queue_name}', '', '')
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_message_count_gems')
                 return {'message': error.to_dict()}, 404
 
-            message_count = get_queue_message_count(cl, rabbitmq_virtual_host, queue_name)
+            message_count = get_queue_message_count(cl, rabbitmq_virtual_host, new_queue_name)
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', api.payload, traceback.format_exc())
-            log('API-rabbitmq_message_count_gems', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-rabbitmq_message_count')
             return {'message': error.to_dict()}, 400
 
         except HTTPError:
             error = UnauthorizedError('Submitted login credentials are incorrect', '', '')
-            log('API-rabbitmq_message_count_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_message_count')
             return {'message': error.to_dict()}, 401
 
         except NetworkError:
             error = ServiceUnavailableError('Could not connect to the RabbitMQ service', '', '')
-            log('API-rabbitmq_message_count_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_message_count')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-rabbitmq_message_count_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_message_count')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-rabbitmq_message_count_gems', LogLevel.INFO, 'Successful requested the RabbitMQ message count')
+            gemslog(LogLevel.INFO, 'Successful requested the RabbitMQ message count', 'API-rabbitmq_message_count')
             return {"virtual_host": rabbitmq_virtual_host,
                     "queue_name": queue_name,
                     "message_count": message_count}, 200

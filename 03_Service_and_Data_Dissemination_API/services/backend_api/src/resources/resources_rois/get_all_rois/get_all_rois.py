@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Get all regions of interest API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -20,7 +20,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import read_from_database_all_rows
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import rois_namespace as api
 from lib.auth_header import auth_header_parser
@@ -52,7 +52,7 @@ class GetAllROIs(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(200, 'Operation successful', several_roi_response_model)
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -81,9 +81,11 @@ class GetAllROIs(Resource):
         """
 
         db_query = """SELECT 
-                          roi_id, roi_name, description, user_id, ST_AsGeoJSON(geom), created_at
+                          roi_id, roi_name, description, customer_id, ST_AsGeoJSON(geom), created_at
                       FROM 
-                          clcplus_users.region_of_interests;
+                          customer.region_of_interests
+                      WHERE
+                          deleted_at IS NULL;
                    """
 
         try:
@@ -95,7 +97,7 @@ class GetAllROIs(Resource):
                     'roi_id': roi[0],
                     'roi_name': roi[1],
                     'description': roi[2],
-                    'user_id': roi[3],
+                    'customer_id': roi[3],
                     'geoJSON': json.loads(roi[4]),
                     'creation_date': roi[5].strftime("%Y-%m-%dT%H:%M:%S")
                 }
@@ -104,14 +106,14 @@ class GetAllROIs(Resource):
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-get_all_rois', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_all_rois')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-get_all_rois', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_all_rois')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-get_all_rois', LogLevel.INFO, f'Successful response: {res_array}')
+            gemslog(LogLevel.INFO, f'Successful response: {res_array}', 'API-get_all_rois')
             return {'rois': res_array}, 200

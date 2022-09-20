@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Create OAuth2 client API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from init.init_env_variables import oauth2_create_client
 from init.namespace_constructor import auth_namespace as api
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from lib.auth_header import auth_header_parser
 from models.models_auth.client_models.client_models import auth_client_request_model, auth_client_response_model
 from models.models_error.http_error_401 import error_401_model
@@ -40,6 +40,7 @@ import traceback
 # Resource definition for the create OAuth2 client API call
 ########################################################################################################################
 
+@api.expect(auth_client_request_model)
 @api.header('Content-Type', 'application/json')
 class CreateOAuthClient(Resource):
     """ Class for handling the POST request
@@ -55,7 +56,7 @@ class CreateOAuthClient(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(body=auth_client_request_model, parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(200, 'Operation successful', auth_client_response_model)
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -99,38 +100,41 @@ class CreateOAuthClient(Resource):
 
         try:
             req_args = api.payload
-            log('API-create_oauth_client', LogLevel.INFO, f'Request payload: {req_args}')
+            gemslog(LogLevel.INFO, f'Request payload: {req_args}', 'API-create_oauth_client')
 
             payload = {'client_name': req_args['client_name'],
                        'grant_type': 'password\nrefresh_token',
                        'response_type': 'code',
+                       'client_uri': '',
+                       'redirect_uri': '',
+                       'scope': '',
                        'token_endpoint_auth_method': 'client_secret_basic'}
 
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
-            response = requests.request("POST", oauth2_create_client, headers=headers, data=payload, timeout=15)
+            response = requests.request('POST', oauth2_create_client, headers=headers, data=payload, timeout=15)
 
         except requests.exceptions.ReadTimeout:
             error = RequestTimeoutError('Connection timed out while contacting the Authorization server', '', '')
-            log('API-weather_service', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-create_oauth_client')
             return {'message': error.to_dict()}, 408
 
         except HTTPError:
             error = ServiceUnavailableError('Could not connect to OAuth2 server', '', '')
-            log('API-create_oauth_client', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-create_oauth_client')
             return {'message': error.to_dict()}, 404
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-create_oauth_client', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-create_oauth_client')
             return {'message': error.to_dict()}, 500
 
         else:
             if response.status_code == 200:
-                log('API-client_models', LogLevel.INFO, f'Request response: {response.json()}')
+                gemslog(LogLevel.INFO, f'Request response: {response.json()}', 'API-create_oauth_client')
                 return response.json()
 
             else:
                 error = ServiceUnavailableError('Could not contact the Authorization Server', api.payload, '')
-                log('API-create_oauth_client', LogLevel.ERROR, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-create_oauth_client')
                 return {'message': error.to_dict()}, 503

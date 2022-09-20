@@ -8,10 +8,12 @@ ARG GIT_PW
 RUN /usr/local/bin/python -m pip install --upgrade pip
 
 # Install GEMS modules stored in BitBucket
-RUN pip install --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_request_check_modul/get/master.zip
-RUN pip install --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_database_modul/get/master.zip
-RUN pip install --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_logging_modul/get/master.zip
-RUN pip install --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_rabbitmq_modul/get/master.zip
+RUN pip install --upgrade --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_request_check_modul/get/master.zip
+RUN pip install --upgrade --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_database_modul/get/master.zip
+RUN pip install --upgrade --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_logging_modul/get/master.zip
+RUN pip install --upgrade --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_rabbitmq_modul/get/master.zip
+RUN pip install --upgrade --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_utils_modul/get/master.zip
+RUN pip install --upgrade --no-cache-dir https://$GIT_USER:$GIT_PW@bitbucket.org/geoville/geoville_ms_request_check_modul/get/master.zip
 
 # Copies the requirements file to the Docker image
 COPY requirements.txt .

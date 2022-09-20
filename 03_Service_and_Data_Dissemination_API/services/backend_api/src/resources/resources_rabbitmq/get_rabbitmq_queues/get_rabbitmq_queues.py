@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # RabbitMQ list queues GEMS API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -20,7 +20,7 @@ from error_classes.http_error_401.http_error_401 import UnauthorizedError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import rabbitmq_host, rabbitmq_management_port, rabbitmq_password, rabbitmq_user
 from init.namespace_constructor import rabbitmq_namespace as api
 from lib.auth_header import auth_header_parser
@@ -53,7 +53,7 @@ class RabbitMQListQueues(Resource):
     ####################################################################################################################
     
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(200, 'Operation successful', rabbitmq_response_model)
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -83,20 +83,20 @@ class RabbitMQListQueues(Resource):
             cl = Client(f'{rabbitmq_host}:{rabbitmq_management_port}', rabbitmq_user, rabbitmq_password)
 
         except HTTPError:
-            error = UnauthorizedError('Login credentials derived from the environment variable are incorrect', '', '')
-            log('API-rabbitmq_queues_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            error = UnauthorizedError('Login credentials derived from the environment variables are incorrect', '', '')
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_queues')
             return {'messages': error.to_dict()}, 401
 
         except NetworkError:
             error = ServiceUnavailableError('Could not connect to the RabbitMQ service', '', '')
-            log('API-rabbitmq_queues_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_queues')
             return {'messages': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-rabbitmq_queues_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-rabbitmq_queues')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-rabbitmq_queues_gems', LogLevel.INFO, 'Successfully retrieved the queue names')
+            gemslog(LogLevel.INFO, 'Successfully retrieved the queue names', 'API-rabbitmq_queues')
             return {'available_queues': [q['name'] for q in cl.get_queues()]}, 200

@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,17 +8,17 @@
 #
 # Implementation of an own Resource Protector
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
-from authlib.flask.oauth2 import ResourceProtector as _ResourceProtector
+from authlib.integrations.flask_oauth2 import ResourceProtector as _ResourceProtector
 from authlib.oauth2 import OAuth2Error
-from authlib.oauth2.rfc6749 import MissingAuthorizationError, TokenRequest
+from authlib.oauth2.rfc6749 import MissingAuthorizationError, HttpRequest
 from error_classes.http_error_401.http_error_401 import UnauthorizedError
 from error_classes.http_error_403.http_error_403 import ForbiddenError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
@@ -105,7 +105,7 @@ class ResourceProtector(_ResourceProtector):
              token (obj): object
         """
 
-        request = TokenRequest(
+        request = HttpRequest(
             _req.method,
             _req.full_path,
             _req.data,
@@ -114,12 +114,10 @@ class ResourceProtector(_ResourceProtector):
 
         if not callable(operator):
             operator = operator.upper()
-
         token = self.validate_request(scope, request, operator)
         token_authenticated.send(self, token=token)
         ctx = _app_ctx_stack.top
         ctx.authlib_server_oauth2_token = token
-
         return token
 
     ####################################################################################################################

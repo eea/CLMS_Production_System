@@ -20,15 +20,13 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    network: traefik_proxy_network
   file:
-    filename: /config.yaml
+    directory: /configs
 
 certificatesResolvers:
   myresolver:
     acme:
       email: IT-Services@geoville.com
-      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       storage: /letsencrypt/acme.json
       httpChallenge:
         entryPoint: web_http

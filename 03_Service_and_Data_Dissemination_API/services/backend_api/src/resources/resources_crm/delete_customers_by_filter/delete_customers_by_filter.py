@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Delete customer by filter API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -21,7 +21,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import execute_database, read_from_database_all_rows
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api, database_config_section_oauth
 from init.namespace_constructor import crm_namespace as api
 from lib.auth_header import auth_header_parser
@@ -71,7 +71,7 @@ class DeleteCustomersByFilter(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=query_param_parser)
+    @api.expect(query_param_parser)
     @api.response(204, 'Operation successful')
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -107,23 +107,23 @@ class DeleteCustomersByFilter(Resource):
 
         try:
             req_args = query_param_parser.parse_args()
-            log('API-delete_customer_filter', LogLevel.INFO, f'Request payload: {req_args}')
+            gemslog(LogLevel.INFO, f'Request payload: {req_args}', 'API-delete_customer_filter')
 
             param_list, val_list = parameter_and_value_list_generation(req_args)
 
             if not val_list and not param_list:
-                db_query_api = "DELETE FROM customer.customer"
-                db_query_oauth = "DELETE FROM public.oauth2_client"
-                db_query_token = "DELETE FROM public.oauth2_token"
+                db_query_api = "UPDATE customer.customer SET deleted_at = NOW()"
+                db_query_oauth = "UPDATE public.oauth2_client SET deleted_at = NOW()"
+                db_query_token = "UPDATE public.oauth2_token SET deleted_at = NOW()"
 
                 execute_database(db_query_api, val_list, database_config_file, database_config_section_api, True)
                 execute_database(db_query_oauth, val_list, database_config_file, database_config_section_oauth, True)
                 execute_database(db_query_token, val_list, database_config_file, database_config_section_oauth, True)
 
             else:
-                db_query_api = f"DELETE FROM customer.customer WHERE {'and '.join(param_list)} RETURNING user_id"
-                db_query_oauth = f"DELETE FROM public.oauth2_client WHERE client_id = %s"
-                db_query_token = f"DELETE FROM public.oauth2_token WHERE client_id = %s"
+                db_query_api = f"UPDATE customer.customer SET deleted_at = NOW() WHERE {'and '.join(param_list)} RETURNING user_id"
+                db_query_oauth = f"UPDATE public.oauth2_client SET deleted_at = NOW() WHERE client_id = %s"
+                db_query_token = f"UPDATE public.oauth2_token SET deleted_at = NOW() WHERE client_id = %s"
 
                 returned_client_ids = read_from_database_all_rows(db_query_api, val_list, database_config_file,
                                                                   database_config_section_api, True)
@@ -137,19 +137,19 @@ class DeleteCustomersByFilter(Resource):
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', api.payload, traceback.format_exc())
-            log('API-delete_customer_filter', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-delete_customer_filter')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-delete_customer_filter', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_customer_filter')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-delete_customer_filter', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_customer_filter')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-delete_customer_filter', LogLevel.INFO, 'The filtered list of customer data has been deleted')
+            gemslog(LogLevel.INFO, 'The filtered list of customer data has been deleted', 'API-delete_customer_filter')
             return '', 204

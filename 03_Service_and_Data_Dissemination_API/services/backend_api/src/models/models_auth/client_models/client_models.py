@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Client models for the Swagger UI
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -38,11 +38,11 @@ auth_client_request_model = api.model('auth_client_request_model',
 
 auth_client_response_model = api.model('auth_client_response_model',
                                        {
-                                           'client_id': fields.String(
+                                           'user_id': fields.String(
                                                description='Client ID returned from the endpoint',
                                                example='8KfYSDj8Wq2iNtIly98M5ES4'
                                            ),
-                                           'client_secret': fields.String(
+                                           'user_id': fields.String(
                                                description='Client secret returned from the endpoint',
                                                example='Cgc8lMd5LozQz5ifiqMks'
                                            )
@@ -54,7 +54,7 @@ auth_client_response_model = api.model('auth_client_response_model',
 
 client_response_model = api.model('client_response_model',
                                    {
-                                       'client_id': fields.String(
+                                       'user_id': fields.String(
                                            description='User specific client ID',
                                            example='8KfYSDj8Wq2iNtIly98M5ES4'
                                        ),

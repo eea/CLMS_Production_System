@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # API call for creating a warning log message
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -20,7 +20,7 @@ from error_classes.http_error_400.http_error_400 import BadRequestError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import logging_namespace as api
 from lib.auth_header import auth_header_parser
@@ -38,6 +38,7 @@ import traceback
 # Resources definition for creating a warning log message via API call
 ########################################################################################################################
 
+@api.expect(logging_request_model)
 @api.header('Content-Type', 'application/json')
 class LogWarning(Resource):
     """ Class for handling the POST request
@@ -52,7 +53,7 @@ class LogWarning(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin', 'user'])
-    @api.doc(body=logging_request_model, parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(204, 'Operation was successful')
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -92,24 +93,30 @@ class LogWarning(Resource):
         try:
             req_args = api.payload
 
+            if req_args['service_module_name'] == '':
+                error = BadRequestError('Service name must be valid string', api.payload, '')
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-log_warning')
+                return {'message': error.to_dict()}, 400
+
             if not check_service_name_similarity(req_args['service_module_name'], database_config_file,
                                                  database_config_section_api):
                 error = BadRequestError('Service name could not be found', api.payload, '')
-                log('API-log_warning', LogLevel.ERROR, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-log_warning')
                 return {'message': error.to_dict()}, 400
 
-            log(req_args['service_module_name'], LogLevel.WARNING, req_args['log_message'])
+            order_id = None if 'order_id' not in req_args else req_args['order_id']
+            gemslog(LogLevel.WARNING, req_args['log_message'], req_args['service_module_name'], order_id)
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-log_warning', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-log_warning')
             return {'message': error.to_dict()}, 503
 
-        except Exception:
-            error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-log_warning', LogLevel.ERROR, f"'message': {error.to_dict()}")
+        except Exception as err:
+            error = InternalServerErrorAPI(f'Unexpected error occurred: {err}', api.payload, traceback.format_exc())
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-log_warning')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-log_warning', LogLevel.INFO, f'Successfully stored log message')
+            gemslog(LogLevel.INFO, f'Successfully stored log message', 'API-log_warning')
             return '', 204

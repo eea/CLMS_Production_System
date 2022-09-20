@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,17 +8,17 @@
 #
 # OAuth2 method collection for the GEMS API
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
-from authlib.flask.oauth2 import AuthorizationServer
-from authlib.flask.oauth2.sqla import (create_query_client_func, create_save_token_func, create_revocation_endpoint,
-                                       create_bearer_token_validator)
+from authlib.integrations.flask_oauth2 import AuthorizationServer
+from authlib.integrations.sqla_oauth2 import (create_query_client_func, create_save_token_func,
+                                              create_revocation_endpoint, create_bearer_token_validator)
 from oauth.oauth_models import db, OAuth2Client, OAuth2Token
 from oauth.resource_protector import ResourceProtector
 
@@ -39,8 +39,8 @@ require_oauth = ResourceProtector()
 def config_oauth(app):
     """ Configures the FLASK app
 
-    This method registers the OAuth2 instance on the FLASK app object.
-    Thus, all OAuth2 functionalities can be accessed through the FLASk app.
+    This method registers the OAuth2 instance on the FLASK app object. Thus, all OAuth2 functionalities can be accessed
+    through the FLASk app.
 
     Arguments:
         app (obj): FLASK app object

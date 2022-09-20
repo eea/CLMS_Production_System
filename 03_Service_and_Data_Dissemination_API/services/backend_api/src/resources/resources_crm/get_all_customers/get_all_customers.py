@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Get all customers API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -20,7 +20,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import read_from_database_all_rows
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import crm_namespace as api
 from lib.auth_header import auth_header_parser
@@ -51,7 +51,7 @@ class GetAllCustomers(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(200, 'Operation was successful', customer_list_response_model)
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -82,6 +82,8 @@ class GetAllCustomers(Resource):
                           phone_number, company_name
                       FROM 
                           customer.customer
+                      WHERE
+                          deleted_at IS NULL
                    """
 
         try:
@@ -108,14 +110,14 @@ class GetAllCustomers(Resource):
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-get_customers', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_customers')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-get_customers', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_customers')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-get_customers', LogLevel.INFO, f'Successful response')
+            gemslog(LogLevel.INFO, f'Successful response', 'API-get_customers')
             return {'customers': res_array}, 200

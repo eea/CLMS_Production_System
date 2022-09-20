@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Delete service by name API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -21,7 +21,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import execute_database
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import crm_namespace as api
 from lib.auth_header import auth_header_parser
@@ -52,7 +52,7 @@ class DeleteServiceByName(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(204, 'Operation successful')
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -87,26 +87,26 @@ class DeleteServiceByName(Resource):
         """
 
         try:
-            log('API-delete_service_name', LogLevel.INFO, f'Request path parameter: {service_name}')
+            gemslog(LogLevel.INFO, f'Request path parameter: {service_name}', 'API-delete_service_name')
 
-            db_query_api = "DELETE FROM customer.services WHERE service_name = %s"
+            db_query_api = "UPDATE customer.services SET deleted_at = NOW() WHERE service_name = %s"
             execute_database(db_query_api, (service_name,), database_config_file, database_config_section_api, True)
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', '', traceback.format_exc())
-            log('API-delete_service_name', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-delete_service_name')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-delete_service_name', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_service_name')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', '', traceback.format_exc())
-            log('API-delete_service_name', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_service_name')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-delete_service_name', LogLevel.INFO, f"Service name '{service_name}' has been deleted")
+            gemslog(LogLevel.INFO, f"Service name '{service_name}' has been deleted", 'API-delete_service_name')
             return '', 204

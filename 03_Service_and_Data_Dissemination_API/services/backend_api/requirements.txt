@@ -1,5 +1,6 @@
-Authlib<0.13
+Authlib
 Flask
+Flask-Bcrypt
 flask-cors
 flask-restx
 flask_sqlalchemy
@@ -7,4 +8,5 @@ gunicorn
 pyfiglet
 pyrabbit
 requests
-
+pyproj
+shapely

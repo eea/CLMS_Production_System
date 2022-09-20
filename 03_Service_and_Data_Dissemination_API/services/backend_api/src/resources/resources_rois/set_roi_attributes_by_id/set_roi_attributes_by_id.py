@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Updates particular attributes of a region of interest
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import execute_database
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import rois_namespace as api
 from lib.auth_header import auth_header_parser
@@ -43,6 +43,7 @@ import traceback
 # Resource definition for the create customer API call
 ########################################################################################################################
 
+@api.expect(roi_attributes_request)
 @api.header('Content-Type', 'application/json')
 class UpdateROIAttributes(Resource):
     """ Class for handling the PATCH request
@@ -58,7 +59,7 @@ class UpdateROIAttributes(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin', 'user'])
-    @api.doc(body=roi_attributes_request, parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(204, 'Operation successful')
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -101,33 +102,33 @@ class UpdateROIAttributes(Resource):
 
         try:
             req_args = api.payload
-            log('API-update_roi_entity_by_id', LogLevel.INFO, f'Request payload: {req_args}')
+            gemslog(LogLevel.INFO, f'Request payload: {req_args}', 'API-update_roi_entity_by_id')
             param_list, val_list = parameter_and_value_list_generation(req_args)
 
             if not param_list and not val_list:
-                log('API-update_roi_entity_by_id', LogLevel.INFO, 'No ROI update necessary')
+                gemslog(LogLevel.INFO, 'No ROI update necessary', 'API-update_roi_entity_by_id')
                 return '', 204
 
             if not check_roi_existence(req_args['roi_id'], database_config_file, database_config_section_api):
                 error = NotFoundError('The ROI ID does not exist', '', '')
-                log('API-update_roi_entity_by_id', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-update_roi_entity_by_id')
                 return {'message': error.to_dict()}, 404
 
             if 'customer_id' in req_args and not check_user_existence(req_args['user_id'], database_config_file,
                                                                       database_config_section_api):
-                error = NotFoundError('User ID does not exist', '', '')
-                log('API-update_roi_entity_by_id', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                error = NotFoundError('Customer ID does not exist', '', '')
+                gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-update_roi_entity_by_id')
                 return {'message': error.to_dict()}, 404
 
             if 'geoJSON' in req_args:
                 validation_res = validate_geojson(req_args['geoJSON'], database_config_file, database_config_section_api)
                 if False in validation_res:
                     error = BadRequestError(f'GeoJSON is invalid: {validation_res[1]}', api.payload, '')
-                    log('API-update_roi_entity_by_id', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                    gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-update_roi_entity_by_id')
                     return {'message': error.to_dict()}, 400
 
             db_query = f"""UPDATE 
-                               clcplus_users.region_of_interests
+                               customer.region_of_interests
                            SET 
                                {', '.join(param_list)}
                            WHERE 
@@ -139,19 +140,19 @@ class UpdateROIAttributes(Resource):
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', api.payload, traceback.format_exc())
-            log('API-update_roi_entity_by_id', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-update_roi_entity_by_id')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-update_roi_entity_by_id', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-update_roi_entity_by_id')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-update_roi_entity_by_id', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-update_roi_entity_by_id')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-update_roi_entity_by_id', LogLevel.INFO, 'Updated ROI successfully')
+            gemslog(LogLevel.INFO, 'Updated ROI successfully', 'API-update_roi_entity_by_id')
             return '', 204

@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Delete Airflow configuration by name API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -20,7 +20,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import execute_database
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import config_namespace as api
 from lib.auth_header import auth_header_parser
@@ -51,7 +51,7 @@ class DeleteAirflowConfigByName(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(204, 'Operation successful')
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -84,21 +84,21 @@ class DeleteAirflowConfigByName(Resource):
         """
 
         try:
-            log('API-delete_airflow_config_by_name', LogLevel.INFO, f'Request path parameter: {service_name}')
+            gemslog(LogLevel.INFO, f'Request path parameter: {service_name}', 'API-delete_airflow_config_by_name')
 
-            db_query = "DELETE FROM msgeovilleconfig.airflow_config WHERE service_name = %s"
+            db_query = "UPDATE msgeovilleconfig.airflow_config SET deleted_at = NOW() WHERE service_name = %s"
             execute_database(db_query, (service_name, ), database_config_file, database_config_section_api, True)
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-delete_airflow_config_by_name', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_airflow_config_by_name')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-delete_airflow_config_by_name', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_airflow_config_by_name')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-delete_airflow_config_by_name', LogLevel.INFO, f'Deleted airflow config for: {service_name}')
+            gemslog(LogLevel.INFO, f'Deleted airflow config for: {service_name}', 'API-delete_airflow_config_by_name')
             return '', 204

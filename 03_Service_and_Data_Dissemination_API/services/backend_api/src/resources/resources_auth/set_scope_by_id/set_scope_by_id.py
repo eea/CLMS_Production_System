@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Set OAuth2 scope by ID API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -20,8 +20,8 @@ from error_classes.http_error_400.http_error_400 import BadRequestError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
-from geoville_ms_database.geoville_ms_database import execute_database
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_database.geoville_ms_database import execute_database, read_from_database_one_row
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_oauth
 from init.namespace_constructor import auth_namespace as api
 from lib.auth_header import auth_header_parser
@@ -32,6 +32,7 @@ from models.models_error.http_error_403 import error_403_model
 from models.models_error.http_error_500 import error_500_model
 from models.models_error.http_error_503 import error_503_model
 from oauth.oauth2 import require_oauth
+import json
 import traceback
 
 
@@ -39,6 +40,7 @@ import traceback
 # Resource definition for the set scope API call
 ########################################################################################################################
 
+@api.expect(scope_update_request_model)
 @api.header('Content-Type', 'application/json')
 class UpdateScope(Resource):
     """ Class for handling the PATCH request
@@ -54,7 +56,7 @@ class UpdateScope(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(body=scope_update_request_model, parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(204, 'Operation successful')
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -91,30 +93,47 @@ class UpdateScope(Resource):
 
         try:
             req_args = api.payload
-            log('API-set_scope_by_id', LogLevel.INFO, f'Request payload: {req_args}')
+            gemslog(LogLevel.INFO, f'Request payload: {req_args}', 'API-set_scope_by_id')
 
-            db_query = "UPDATE public.oauth2_client SET scope= %s WHERE client_id = %s"
-            execute_database(db_query, (req_args['scope'], req_args['client_id']), database_config_file,
+            db_query = "SELECT client_metadata FROM public.oauth2_client WHERE client_id = %s"
+            gemslog(LogLevel.INFO,
+                    db_query % req_args['client_id'],
+                    'API-set_scope_by_id')
+            scope_data = read_from_database_one_row(db_query, (req_args['client_id'],), database_config_file,
+                                                    database_config_section_oauth, True)
+
+            additional_data = json.loads(scope_data[0])
+            additional_data['scope'] = req_args['scope']
+
+            db_query = """UPDATE 
+                              public.oauth2_client 
+                          SET 
+                              client_metadata= %s
+                          WHERE 
+                              client_id = %s AND
+                              deleted_at IS NULL
+                                   """
+            gemslog(LogLevel.INFO,
+                    db_query % (json.dumps(additional_data), req_args['client_id']),
+                    'API-set_scope_by_id')
+            execute_database(db_query, (json.dumps(additional_data), req_args['client_id']), database_config_file,
                              database_config_section_oauth, True)
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', api.payload, traceback.format_exc())
-            log('API-set_scope_by_id', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-set_scope_by_id')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-set_scope_by_id', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-set_scope_by_id')
             return {'message': error.to_dict()}, 503
 
-        except Exception:
-            error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-set_scope_by_id', LogLevel.ERROR, f"'message': {error.to_dict()}")
+        except Exception as err:
+            error = InternalServerErrorAPI(f'Unexpected error occurred {err}', api.payload, traceback.format_exc())
+            gemslog('API-set_scope_by_id', LogLevel.ERROR, f"'message': {error.to_dict()}")
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-set_scope_by_id', LogLevel.INFO, f"Updated the scope entry for ID: {req_args['client_id']}")
+            gemslog(LogLevel.INFO, f"Updated the scope entry for ID: {req_args['client_id']}", 'API-set_scope_by_id')
             return '', 204
-
-
-

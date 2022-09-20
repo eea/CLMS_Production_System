@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Get Bearer token API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,10 +22,11 @@ from error_classes.http_error_408.http_error_408 import RequestTimeoutError
 from error_classes.http_error_404.http_error_404 import NotFoundError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from flask_restx import Resource
-from init.init_env_variables import (database_config_file, database_config_section_oauth, oauth2_generate_token,
-                                     oauth2_password, oauth2_user)
+from init.init_env_variables import (database_config_file, database_config_section_oauth, oauth2_bearer_expiration_time,
+                                     oauth2_generate_token, oauth2_password, oauth2_user)
 from init.namespace_constructor import auth_namespace as api
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_database.geoville_ms_database import execute_database
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from lib.database_helper import (check_client_id_existence, check_client_id_secret_existence,
                                  check_client_secret_existence, get_scope_by_id)
 from models.models_auth.access_token_models.access_token_models import bearer_token_request_model, bearer_token_response_model
@@ -102,25 +103,25 @@ class GetBearerToken(Resource):
 
         try:
             req_args = api.payload
-            log('API-get_bearer_token', LogLevel.INFO, f'Request payload: {req_args}')
+            gemslog(LogLevel.INFO, f'Request payload: {req_args}', 'API-get_bearer_token')
 
-            if not check_client_id_existence(req_args['client_id'], database_config_file, database_config_section_oauth):
-                error = NotFoundError('Client ID does not exist', '', '')
-                log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            if not check_client_id_existence(req_args['user_id'], database_config_file, database_config_section_oauth):
+                error = NotFoundError('User ID does not exist', '', '')
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
                 return {'message': error.to_dict()}, 404
 
             if not check_client_secret_existence(req_args['client_secret'], database_config_file, database_config_section_oauth):
                 error = NotFoundError('Client secret does not exist', '', '')
-                log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
                 return {'message': error.to_dict()}, 404
 
-            if not check_client_id_secret_existence(req_args['client_id'], req_args['client_secret'],
+            if not check_client_id_secret_existence(req_args['user_id'], req_args['client_secret'],
                                                     database_config_file, database_config_section_oauth):
                 error = BadRequestError('Invalid client credentials combination', '', '')
-                log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
                 return {'message': error.to_dict()}, 400
 
-            scope = get_scope_by_id(req_args['client_id'], database_config_file, database_config_section_oauth)
+            scope = get_scope_by_id(req_args['user_id'], database_config_file, database_config_section_oauth)
 
             files = {
                 'grant_type': (None, "password"),
@@ -129,40 +130,53 @@ class GetBearerToken(Resource):
                 'scope': (None, scope),
             }
 
-            response = requests.post(oauth2_generate_token, files=files, auth=(req_args['client_id'],
+            response = requests.post(oauth2_generate_token, files=files, auth=(req_args['user_id'],
                                                                                req_args['client_secret']), timeout=15)
+
+            token_response = response.json()
+            update_query = """UPDATE public.oauth2_token
+                              SET 
+                                  expires_in = %s 
+                              WHERE
+                                  access_token like %s;
+                           """
+
+            execute_database(update_query, (oauth2_bearer_expiration_time, token_response['access_token']),
+                             database_config_file, database_config_section_oauth, True)
+
+            token_response['expires_in'] = oauth2_bearer_expiration_time
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', '', traceback.format_exc())
-            log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
             return {'message': error.to_dict()}, 400
 
         except requests.exceptions.ReadTimeout:
             error = RequestTimeoutError('Connection timed out while contacting the Authorization server', '', '')
-            log('API-get_bearer_token', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-get_bearer_token')
             return {'message': error.to_dict()}, 408
 
         except HTTPError:
             error = NotFoundError(f'Could not connect to OAuth2 server', '', traceback.format_exc())
-            log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
             return {'message': error.to_dict()}, 404
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
             return {'message': error.to_dict()}, 500
 
         else:
             if response.status_code == 200:
-                log('API-get_bearer_token', LogLevel.INFO, f'Request response: {response.json()}')
-                return response.json()
+                gemslog(LogLevel.INFO, f'Request response: {response.json()}', 'API-get_bearer_token')
+                return token_response
 
             elif response.status_code == 401:
                 error = UnauthorizedError('Submitted client is invalid', '', '')
-                log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
                 return {'message': error.to_dict()}, 401
 
             else:
                 error = InternalServerErrorAPI(f'Unexpected error: {response.text}', '', '')
-                log('API-get_bearer_token', LogLevel.ERROR, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_bearer_token')
                 return {'message': error.to_dict()}, 501

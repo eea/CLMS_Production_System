@@ -3,17 +3,16 @@ version: '3.7'
 services:
   reverse-proxy:
     image: traefik:latest
-    container_name: web_server
+    container_name: proxy_server
     restart: always
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./services/proxy_server/traefik/traefik.yml:/traefik.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./services/proxy_server/traefik/static_config/traefik.yml:/traefik.yml:ro
+      - ./services/proxy_server/traefik/dynamic_config:/configs
       - traefik_cert_data:/letsencrypt
-    networks:
-      - traefik_proxy_network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.service=api@internal"
@@ -22,6 +21,7 @@ services:
       - "traefik.http.routers.api.middlewares=dashboard_basic_auth"
       - "traefik.http.middlewares.dashboard_basic_auth.basicauth.users=geoville:$$apr1$$GNDpC4ZG$$xe16xZTnVOuUo3b4LpHcH0"
       - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.middlewares=secure-headers@file, compress-content@file"
       - "traefik.http.routers.api.tls.certresolver=myresolver"
 
   backend:
@@ -37,8 +37,11 @@ services:
       - "8080:8080"
     env_file:
       - services/backend_api/.env
-    networks:
-      - traefik_proxy_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+        max-file: "3"
     depends_on:
       - db
     labels:
@@ -66,8 +69,6 @@ services:
       - ./services/database/db_init_script:/docker-entrypoint-initdb.d/
       - ./services/database/postgresql.conf:/etc/postgresql/postgresql.conf
       - postgresql_data:/var/lib/postgresql/data
-    networks:
-      - traefik_proxy_network
     depends_on:
       - reverse-proxy
 
@@ -85,15 +86,22 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
       - rabbitmq_logs:/var/log/rabbitmq
       - ./services/rabbitmq/config_files:/etc/rabbitmq
-    networks:
-      - traefik_proxy_network
+
+  frontend:
+    image: imagehub.geoville.com/clcplus_frontend_web_app:latest
+    container_name: frontend
+    restart: always
+    ports:
+      - "9001:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entryPoints=web_secure_https"
+      - "traefik.http.routers.frontend.rule=Host(`$FRONTEND_DOMAIN`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
 
 volumes:
   traefik_cert_data:
   postgresql_data:
   rabbitmq_data:
   rabbitmq_logs:
-
-networks:
- traefik_proxy_network:
-    external: true

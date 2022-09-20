@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # API entry point
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 07.07.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.07
 #
 ########################################################################################################################
 
@@ -27,7 +27,7 @@ clcplus_blueprint = Blueprint('clcplus_api', __name__, url_prefix='/v1')
 
 clcplus_api = Api(clcplus_blueprint,
                   title='CLCplus Backbone API',
-                  version='20.06',
-                  description='CLCplus Backbone Service API based on a Microservice architecture <style>.models {display: none !important}</style>',
+                  version='21.08',
+                  description='CLCplus Backbone Service API based on a Microservice architecture',
                   contact='IT-Services@geoville.com'
                   )

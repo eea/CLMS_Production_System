@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Get all OAuth2 scopes API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import read_from_database_all_rows
 from init.namespace_constructor import auth_namespace as api
 from init.init_env_variables import database_config_file, database_config_section_oauth
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from lib.auth_header import auth_header_parser
 from models.models_auth.scope_models.scope_models import scope_list_response_model
 from models.models_error.http_error_400 import error_400_model
@@ -32,6 +32,7 @@ from models.models_error.http_error_404 import error_404_model
 from models.models_error.http_error_500 import error_500_model
 from models.models_error.http_error_503 import error_503_model
 from oauth.oauth2 import require_oauth
+import json
 import traceback
 
 
@@ -81,25 +82,30 @@ class GetScopes(Resource):
         """
 
         try:
-            db_query = "SELECT client_id, scope FROM public.oauth2_client"
+            db_query = "SELECT client_id, client_metadata FROM public.oauth2_client WHERE deleted_at IS NULL"
             scope = read_from_database_all_rows(db_query, (), database_config_file, database_config_section_oauth, True)
+
+            if scope is None or scope is False:
+                gemslog(LogLevel.INFO, 'No scope data found', 'API-get_scopes')
+                return {'scopes': None}, 200
 
             res_array = []
 
             for single_scope in scope:
-                scope_obj = {'client_id': single_scope[0], 'scope': single_scope[1]}
+                additional_data = json.loads(single_scope[1])
+                scope_obj = {'client_id': single_scope[0], 'scope': additional_data['scope']}
                 res_array.append(scope_obj)
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-get_scopes', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_scopes')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', '', traceback.format_exc())
-            log('API-get_scopes', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_scopes')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-get_scopes', LogLevel.INFO, f'Request successful: {scope_obj}')
+            gemslog(LogLevel.INFO, f'Request successful: {scope_obj}', 'API-get_scopes')
             return {'scopes': res_array}, 200

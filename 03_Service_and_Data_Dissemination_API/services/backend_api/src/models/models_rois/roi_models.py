@@ -8,11 +8,11 @@
 #
 # Region of interest models for the Swagger UI
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -99,7 +99,7 @@ single_roi_response_model = api.model('single_roi_response_model',
                                               description='Descriptive text about the ROI',
                                               example='An example region of interest'
                                           ),
-                                          'user_id': fields.String(
+                                          'customer_id': fields.String(
                                               description='Unique identifier of a customer',
                                               example='8KfYSDj8Wq2iNtIly98M5ES4'
                                           ),
@@ -154,7 +154,7 @@ roi_attributes_request = api.model('roi_attributes_request',
                                            description='Descriptive ',
                                            example='An example region of interest'
                                        ),
-                                       'user_id': fields.String(
+                                       'customer_id': fields.String(
                                            description='Unique identifier of a customer',
                                            example='8KfYSDj8Wq2iNtIly98M5ES4'
                                        ),
@@ -193,7 +193,7 @@ roi_entity_request = api.model('roi_entity_request',
                                        description='Descriptive ',
                                        example='Example region of interest'
                                    ),
-                                   'user_id': fields.String(
+                                   'customer_id': fields.String(
                                        description='Unique identifier of a customer',
                                        example='8KfYSDj8Wq2iNtIly98M5ES4',
                                        required=True

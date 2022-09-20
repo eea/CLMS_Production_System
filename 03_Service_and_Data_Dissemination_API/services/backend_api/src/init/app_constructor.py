@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,16 +8,17 @@
 #
 # Flask App entry point
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 01.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
 from blueprints.hello_Geoville.hello_geoville import index_page
 from flask import Flask
+from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 import os
@@ -55,6 +56,12 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
 ########################################################################################################################
 
 CORS(app)
+
+########################################################################################################################
+# Password encryption for the resource owner user creation
+########################################################################################################################
+
+bcrypt = Bcrypt(app)
 
 ########################################################################################################################
 # Register the blueprints

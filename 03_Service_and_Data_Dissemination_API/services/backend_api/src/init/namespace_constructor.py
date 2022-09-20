@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,18 +8,18 @@
 #
 # Namespace creation for the API definitions
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
 from flask_restx import Namespace
 
 ########################################################################################################################
-# Internal namespaces for the GeoVille stuff in the Swagger UI
+# Namespaces available in the Swagger UI
 ########################################################################################################################
 
 auth_namespace = Namespace('auth', description='Authentication related operations')
@@ -31,3 +31,5 @@ service_namespace = Namespace('services', description='Service related operation
 logging_namespace = Namespace('logging', description='Logging related operations')
 general_error_namespace = Namespace('error_models', description='Inlcudes all error models')
 auth_header_namespace = Namespace('auth', description='Authentication header model')
+monitoring_namespace = Namespace('monitoring', description='Operations related to monitoring')
+products_namespace = Namespace('products', description='Order final products')

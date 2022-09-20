@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Customer models for the Swagger UI
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -25,7 +25,7 @@ from init.namespace_constructor import crm_namespace as api
 
 customer_id_model = api.model('customer_id_model',
                               {
-                                  'customer_id': fields.String(
+                                  'user_id': fields.String(
                                       description='Unique identifier of a customer',
                                       example="8KfYSDj8Wq2iNtIly98M5ES4",
                                       required=True
@@ -74,6 +74,11 @@ customer_model = api.model('customer_model',
                                    required=True,
                                    pattern="(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)",
                                    example='max_mustermann@mustermann.de'
+                               ),
+                               'password': fields.String(
+                                   description='e-mail address of the customer',
+                                   required=True,
+                                   example='ABCD1234'
                                ),
                                'address': fields.String(
                                    description='1st address of the customer',

@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Service models for the Swagger UI
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -69,6 +69,38 @@ service_id_model = api.model('service_id_model',
 # Object model for the get_all_services GET request
 ########################################################################################################################
 
+service_query_model = api.model('service_query_model',
+                                 {
+                                     'subproduction_unit': fields.String(
+                                         description='Unique identifier of a sub-production unit',
+                                         example='1_2'
+                                     ),
+                                     'processing_unit': fields.String(
+                                         description='Unique identifier of a processing unit',
+                                         example='10kmE108N256'
+                                     ),
+                                     'service_name': fields.String(
+                                         description='Unique name of a service',
+                                         example='service_name'
+                                     ),
+                                     'order_status': fields.String(
+                                         description='Status of an order',
+                                         example='order status'
+                                     ),
+                                     'order_id': fields.String(
+                                         description='Unique identifier of an order',
+                                         example='2bfedd049fb5cff841e4965fabbeec46'
+                                     ),
+                                     'order_json': fields.String(
+                                         description='Order payload in form of a json',
+                                         example='{"key": value}'
+                                     ),
+                                     'order_result': fields.String(
+                                         description='Path to the order result',
+                                         example='/.../result.tif'
+                                     )
+                                 })
+
 service_object_model = api.model('service_object_model',
                                  {
                                      'service_id': fields.String(
@@ -110,5 +142,13 @@ service_list_model = api.model('service_list_model',
                                    'services': fields.List(fields.Nested(
                                        service_object_model,
                                        description='Detailed service information')
+                                   ),
+                               })
+
+query_list_model = api.model('query_list_model',
+                               {
+                                   'services': fields.List(fields.Nested(
+                                       service_query_model,
+                                       description='Detailed query information')
                                    ),
                                })

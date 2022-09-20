@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Get region of interest by ID API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import read_from_database_all_rows
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import rois_namespace as api
 from lib.auth_header import auth_header_parser
@@ -59,7 +59,7 @@ class GetROIByUserID(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin', 'user'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(200, 'Operation successful', several_roi_response_model)
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -102,19 +102,20 @@ class GetROIByUserID(Resource):
         """
 
         db_query = """SELECT 
-                          roi_id, roi_name, description, user_id, ST_AsGeoJSON(geom), created_at
+                          roi_id, roi_name, description, customer_id, ST_AsGeoJSON(geom), created_at
                       FROM 
-                          clcplus_users.region_of_interests 
+                          customer.region_of_interests 
                       WHERE 
-                          user_id = %s;
+                          customer_id = %s AND
+                          deleted_at IS NULL;
                    """
 
         try:
-            log('API-get_roi_by_user', LogLevel.INFO, f'Request path parameter: {user_id}')
+            gemslog(LogLevel.INFO, f'Request path parameter: {user_id}', 'API-get_roi_by_user')
 
             if not check_user_existence(user_id, database_config_file, database_config_section_api):
                 error = NotFoundError('User ID does not exist', '', '')
-                log('API-get_roi_by_user', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-get_roi_by_user')
                 return {'message': error.to_dict()}, 404
 
             roi_data = read_from_database_all_rows(db_query, (user_id,), database_config_file,
@@ -127,7 +128,7 @@ class GetROIByUserID(Resource):
                     'roi_id': roi[0],
                     'roi_name': roi[1],
                     'description': roi[2],
-                    'user_id': roi[3],
+                    'customer_id': roi[3],
                     'geoJSON': json.loads(roi[4]),
                     'creation_date': str(roi[5])
                 }
@@ -136,19 +137,19 @@ class GetROIByUserID(Resource):
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', api.payload, traceback.format_exc())
-            log('API-get_roi_by_user', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-get_roi_by_user')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-get_roi_by_user', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_roi_by_user')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-get_roi_by_user', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_roi_by_user')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-get_roi_by_user', LogLevel.INFO, f'Successful response: {res_array}')
+            gemslog(LogLevel.INFO, f'Successful response: {res_array}', 'API-get_roi_by_user')
             return {'rois': res_array}, 200

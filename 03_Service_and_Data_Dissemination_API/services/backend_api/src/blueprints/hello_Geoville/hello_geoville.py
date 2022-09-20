@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Index Page for the API Gateway
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 07.07.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.07
 #
 ########################################################################################################################
 
@@ -43,18 +43,18 @@ def api_hello_geoville():
 
     """
 
-    ascii_banner = pyfiglet.figlet_format("CLCplus Backbone API\r\n2020")
+    ascii_banner = pyfiglet.figlet_format("CLCplus Backbone API\r\n2021")
 
     html_text_pre = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">' \
                     '<head>' \
-                        '<title>Welcome to CLCplus Backbone Service API</title>' \
+                        '<title>Welcome to the CLCplus Backbone Service API</title>' \
                         '<LINK REL="StyleSheet" href="style1.css" type="text/css">' \
                     '</head>' \
                     '<body>' \
-                        '<h1>Welcome to GeoVille Services</h1>' \
+                        '<h1>Welcome to the CLCplus Backbone Service API</h1>' \
                         '<pre class="ascii">'
 
-    html_text_post = f'</pre><p>(V 20.06)</p></body>'
+    html_text_post = f'</pre><p>(V 21.08)</p></body>'
 
     static_content = html_text_pre + ascii_banner + html_text_post
 

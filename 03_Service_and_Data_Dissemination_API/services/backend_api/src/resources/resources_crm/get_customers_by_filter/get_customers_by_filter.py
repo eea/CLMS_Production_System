@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Get customer by filter API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -21,7 +21,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import read_from_database_all_rows
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import crm_namespace as api
 from lib.auth_header import auth_header_parser
@@ -72,7 +72,7 @@ class GetCustomersByFilter(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=query_param_parser)
+    @api.expect(query_param_parser)
     @api.response(200, 'Operation successful', customer_list_response_model)
     @api.response(401, 'Unauthorized', error_401_model)
     @api.response(403, 'Forbidden', error_403_model)
@@ -106,7 +106,7 @@ class GetCustomersByFilter(Resource):
 
         try:
             req_args = query_param_parser.parse_args()
-            log("API-get_customers_filter", LogLevel.INFO, f"Request payload: {req_args}")
+            gemslog(LogLevel.INFO, f"Request payload: {req_args}", 'API-get_customer_filter')
 
             param_list, val_list = parameter_and_value_list_generation(req_args)
 
@@ -116,6 +116,8 @@ class GetCustomersByFilter(Resource):
                                   phone_number, company_name 
                               FROM 
                                   customer.customer
+                              WHERE
+                                  deleted_at IS NULL
                            """
 
             else:
@@ -125,7 +127,8 @@ class GetCustomersByFilter(Resource):
                                FROM 
                                    customer.customer
                                WHERE 
-                                   {'and '.join(param_list)}
+                                   {'AND '.join(param_list)} AND
+                                   deleted_at IS NULL
                             """
 
             customer_data = read_from_database_all_rows(db_query, val_list, database_config_file,
@@ -155,19 +158,19 @@ class GetCustomersByFilter(Resource):
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', req_args, traceback.format_exc())
-            log('API-get_customer_filter', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-get_customer_filter')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-get_customer_filter', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_customer_filter')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', req_args, traceback.format_exc())
-            log('API-get_customer_filter', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-get_customer_filter')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-get_customer_filter', LogLevel.INFO, f'Successful response: {customer_res}')
+            gemslog(LogLevel.INFO, f'Successful response: {customer_res}', 'API-get_customer_filter')
             return {'customers': customer_res}, 200

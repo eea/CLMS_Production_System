@@ -1,6 +1,6 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
@@ -8,11 +8,11 @@
 #
 # Create region of interest API call
 #
-# Date created: 10.06.2020
-# Date last modified: 10.06.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.06
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
 from geoville_ms_database.geoville_ms_database import execute_database
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import database_config_file, database_config_section_api
 from init.namespace_constructor import rois_namespace as api
 from lib.auth_header import auth_header_parser
@@ -45,6 +45,7 @@ import traceback
 # Resource definition for the create region of interest API call
 ########################################################################################################################
 
+@api.expect(roi_request_model)
 @api.header('Content-Type', 'application/json')
 class CreateROI(Resource):
     """ Class for handling the POST request
@@ -60,7 +61,7 @@ class CreateROI(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin', 'user'])
-    @api.doc(body=roi_request_model, parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(201, 'Operation successful', roi_id_model)
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -89,7 +90,7 @@ class CreateROI(Resource):
         <ul>
         <li><p><i>name (str): Name identifier for the region of interest</i></p></li>
         <li><p><i>description (str): Longer description for the region of interest but not required</i></p></li>
-        <li><p><i>customer_id (str): User specific client ID to link the region of interst to a user</i></p></li>
+        <li><p><i>user_id (str): User specific client ID to link the region of interst to a user</i></p></li>
         <li><p><i>geoJSON (str): GeoJSON definition of the region of interest without any additional attributes</i></p></li>
         </ul>
 
@@ -105,25 +106,25 @@ class CreateROI(Resource):
 
         try:
             req_args = api.payload
-            log('API-create_roi', LogLevel.INFO, f'Request payload: {req_args}')
+            gemslog(LogLevel.INFO, f'Request payload: {req_args}', 'API-create_roi')
 
             if not check_user_existence(req_args['user_id'], database_config_file, database_config_section_api):
                 error = NotFoundError('User ID does not exist', '', '')
-                log('API-create_roi', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-create_roi')
                 return {'message': error.to_dict()}, 404
 
             validation_res = validate_geojson(req_args['geoJSON'], database_config_file, database_config_section_api)
             if False in validation_res:
                 error = BadRequestError(f'GeoJSON is invalid: {validation_res[1]}', api.payload, '')
-                log('API-create_roi', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-create_roi')
                 return {'message': error.to_dict()}, 400
 
             description = None if 'description' not in req_args else req_args['description']
-            roi_id = generate_roi_id_hash(req_args['customer_id'], req_args['name'])
+            roi_id = generate_roi_id_hash(req_args['user_id'], req_args['name'])
 
-            db_query = """INSERT INTO clcplus_users.region_of_interests
+            db_query = """INSERT INTO customer.region_of_interests
                           ( 
-                              roi_id, roi_name, description, user_id, geom
+                              roi_id, roi_name, description, customer_id, geom
                           ) 
                           VALUES
                           (
@@ -137,19 +138,19 @@ class CreateROI(Resource):
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', api.payload, traceback.format_exc())
-            log('API-create_roi', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-create_roi')
             return {'message': error.to_dict()}, 400
 
         except AttributeError:
             error = ServiceUnavailableError('Could not connect to the database server', '', '')
-            log('API-create_roi', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-create_roi')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', api.payload, traceback.format_exc())
-            log('API-create_roi', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-create_roi')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-create_roi', LogLevel.INFO, f'Created ROI with ID: {roi_id}')
+            gemslog(LogLevel.INFO, f'Created ROI with ID: {roi_id}', 'API-create_roi')
             return {'roi_id': roi_id}, 201

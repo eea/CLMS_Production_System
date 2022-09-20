@@ -1,18 +1,18 @@
 ########################################################################################################################
 #
-# Copyright (c) 2020, GeoVille Information Systems GmbH
+# Copyright (c) 2021, GeoVille Information Systems GmbH
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
 # applications without licensing by GeoVille GmbH.
 #
-# RabbitMQ purge queue GEMS API call
+# RabbitMQ purge queue API call
 #
-# Date created: 20.08.2019
-# Date last modified: 11.02.2020
+# Date created: 01.06.2020
+# Date last modified: 10.02.2021
 #
 # __author__  = Michel Schwandner (schwandner@geoville.com)
-# __version__ = 20.02
+# __version__ = 21.02
 #
 ########################################################################################################################
 
@@ -22,7 +22,7 @@ from error_classes.http_error_404.http_error_404 import NotFoundError
 from error_classes.http_error_500.http_error_500 import InternalServerErrorAPI
 from error_classes.http_error_503.http_error_503 import ServiceUnavailableError
 from flask_restx import Resource
-from geoville_ms_logging.geoville_ms_logging import log, LogLevel
+from geoville_ms_logging.geoville_ms_logging import gemslog, LogLevel
 from init.init_env_variables import (rabbitmq_host, rabbitmq_management_port, rabbitmq_password, rabbitmq_user,
                                      rabbitmq_virtual_host)
 from init.namespace_constructor import rabbitmq_namespace as api
@@ -59,7 +59,7 @@ class DeleteRabbitMQQueue(Resource):
     ####################################################################################################################
 
     @require_oauth(['admin'])
-    @api.doc(parser=auth_header_parser)
+    @api.expect(auth_header_parser)
     @api.response(204, 'Operation successful')
     @api.response(400, 'Validation Error', error_400_model)
     @api.response(401, 'Unauthorized', error_401_model)
@@ -68,7 +68,7 @@ class DeleteRabbitMQQueue(Resource):
     @api.response(500, 'Internal Server Error', error_500_model)
     @api.response(503, 'Service Unavailable', error_503_model)
     def delete(self, queue_name):
-        """ DELETE definition for removing a queue on the GEMS RabbitMQ instance
+        """ DELETE definition for removing a queue on the RabbitMQ instance
 
         <p style="text-align: justify">This method defines the handler for the DELETE request of the RabbitMQ purge
         queue script. It returns no message body and thus no contents. In contrast it returns the HTTP status code 204.
@@ -99,36 +99,36 @@ class DeleteRabbitMQQueue(Resource):
 
             if queue_name not in list_queue_names(cl):
                 error = NotFoundError(f"Specified queue name does not exist: {queue_name}", '', '')
-                log('API-delete_rabbitmq_queue_gems', LogLevel.WARNING, f"'message': {error.to_dict()}")
+                gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-delete_rabbitmq_queue')
                 return {'message': error.to_dict()}, 404
 
             purge_result = purge_queue(cl, rabbitmq_virtual_host, queue_name)
 
             if purge_result[0] is False:
                 error = InternalServerErrorAPI(f'Unexpected Error: {purge_result[1]}', '', '')
-                log('API-delete_rabbitmq_queue_gems', LogLevel.ERROR, 'Successfully deleted queue')
+                gemslog(LogLevel.ERROR, 'Successfully deleted queue', 'API-delete_rabbitmq_queue')
                 return {'message': error.to_dict()}, 500
 
         except KeyError as err:
             error = BadRequestError(f'Key error resulted in a BadRequest: {err}', '', '')
-            log('API-delete_rabbitmq_queue_gems', LogLevel.WARNING, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.WARNING, f"'message': {error.to_dict()}", 'API-delete_rabbitmq_queue')
             return {'message': error.to_dict()}, 400
 
         except HTTPError:
             error = UnauthorizedError('Submitted login credentials are incorrect', '', '')
-            log('API-delete_rabbitmq_queue_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_rabbitmq_queue')
             return {'message': error.to_dict()}, 401
 
         except NetworkError:
             error = ServiceUnavailableError('Could not connect to the specified RabbitMQ service', '', '')
-            log('API-delete_rabbitmq_queue_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_rabbitmq_queue')
             return {'message': error.to_dict()}, 503
 
         except Exception:
             error = InternalServerErrorAPI('Unexpected error occurred', '', traceback.format_exc())
-            log('API-delete_rabbitmq_queue_gems', LogLevel.ERROR, f"'message': {error.to_dict()}")
+            gemslog(LogLevel.ERROR, f"'message': {error.to_dict()}", 'API-delete_rabbitmq_queue')
             return {'message': error.to_dict()}, 500
 
         else:
-            log('API-delete_rabbitmq_queue_gems', LogLevel.ERROR, 'Successfully deleted queue')
+            gemslog(LogLevel.INFO, 'Successfully deleted queue', 'API-delete_rabbitmq_queue')
             return '', 204
