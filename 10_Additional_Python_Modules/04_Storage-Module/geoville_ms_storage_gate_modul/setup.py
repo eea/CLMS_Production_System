@@ -6,7 +6,7 @@ setup(
     packages=find_packages(exclude=["tests", "*tests.py"]),
     py_modules=['storage_gate'],
     url='',
-    license='GeoVille Software',
+    license='',
     author='Johannes Schmid',
     author_email='schmid@geoville.com',
     description='GeoVille Microservices Storage Gate Module for reading '
