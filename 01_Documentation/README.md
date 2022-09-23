@@ -27,3 +27,26 @@
 |Date| Backbone System Manual: API |
 |Distribution List| CLC+ Backbone project consortium; Project Officer and European Environment Agency services |
 |Confidentiality| Confidential to the above Distribution List |
+
+### Document Release Sheet 
+
+| Name | Role | Date |
+|--|--|--|
+|Johannes Schmid (GeoVille)|Creation| xx/xx/2022
+|Wolfgang Kapferer (GeoVille)|Creation| xx/xx/2022
+|Markus Probeck (GAF)|Revision| |
+|Inés Ruiz Gomez (GAF)|Revision| |
+|Tobias Langanke (EEA)|Approval| |
+
+### Document History & Change Record
+
+| Issue / Version | Release Date | Created by | Description of Issue / Change(s)|
+|--|--|--|--|
+|1.0|20/07/2021|GAF / GeoVille|First Issue of the CLC+ Backbone System Specification|
+
+### Applicable Documents
+
+| Issue | Document |
+|--|--|
+| [AD-01] | EN-EEA.DIS.R0.19.012_Annex+I_Tender+Specifications_001 |
+| [AD-02] | EN-EEA.DIS.R0.19.012_Annex 7 to TS_Technical+specification_Land+monitoring+concept_EAGLE |
