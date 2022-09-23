@@ -15,10 +15,10 @@ Python based API for triggering the production of the raster and vector products
 Python based API for data dissemination
 
 #### 4. Airflow
-Apache Airflow installation and configuration
+Apache Airflow installation and configuration.
 
 #### 5. Airflow DAGs
-Source codes of the Airflo wDirected Acyclic Graphs (DAGs)
+Source codes of the Airflow Directed Acyclic Graphs (DAGs) used in the CLC+ backbone system. 
 
 #### 6. Database
 Database DDL files and database models
