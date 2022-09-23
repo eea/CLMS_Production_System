@@ -17,9 +17,13 @@
 
 | Settings | Value |
 |--|--|
-|Document Title| Backbone System Manual: API |
-|Project Title| Copernicus Land Monitoring Service – CLC+ Backbone Production, including Raster and |
-|Document Title| Backbone System Manual: API |
-|Document Title| Backbone System Manual: API |
-|Document Title| Backbone System Manual: API |
-|Document Title| Backbone System Manual: API |
+|Document Title| SYSTEM SPECIFICATION |
+|Project Title| Copernicus Land Monitoring Service – CLC+ Backbone Production, including Raster and Vector Products based on Satellite Input Data from 2017/2018/2019|
+|Document Author(s)| GeoVille |
+|Project Owner| Hans Dufourmont (EEA) |
+|Project Manager| Tobias Langanke (EEA)|
+|Doc. Issue/Version| 1.0 |
+|Date| xx/xx/2022 |
+|Date| Backbone System Manual: API |
+|Distribution List| CLC+ Backbone project consortium; Project Officer and European Environment Agency services |
+|Confidentiality| Confidential to the above Distribution List |
