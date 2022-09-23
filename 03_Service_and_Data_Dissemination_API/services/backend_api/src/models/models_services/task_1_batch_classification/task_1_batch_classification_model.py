@@ -1,8 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
-# applications without licensing by GeoVille GmbH.
-#
 # Task 1 batch classification model for the Swagger UI
 #
 # Date created: 15.04.2021

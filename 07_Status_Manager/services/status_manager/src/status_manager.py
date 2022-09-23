@@ -1,8 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
-# applications without licensing by GeoVille GmbH.
-#
 # Entry point for the status manager script
 #
 # Date created: 10.06.2020

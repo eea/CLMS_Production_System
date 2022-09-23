@@ -1,8 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
-# applications without licensing by GeoVille GmbH.
-#
 # Retransformation model for the Swagger UI
 #
 # Date created: 07.07.2021

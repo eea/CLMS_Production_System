@@ -1,9 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, is prohibited for all commercial applications without
-# licensing by GeoVille GmbH.
-#
 # OAuth2 functionalities, grant definitions, revocation and protected resources
 #
 # Date created: 19.09.2019

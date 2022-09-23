@@ -1,8 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
-# applications without licensing by GeoVille GmbH.
-#
 # Task 2 feature calculation API call
 #
 # Date created: 19.04.2021

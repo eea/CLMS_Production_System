@@ -1,9 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, is prohibited for all commercial applications without
-# licensing by GeoVille GmbH.
-#
 # Create client endpoint
 #
 # Date created: 07.10.2019

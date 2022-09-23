@@ -1,9 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, is prohibited for all commercial applications without
-# licensing by GeoVille GmbH.
-#
 # Methods for database connection establishment
 #
 # Date created: 08.10.2019

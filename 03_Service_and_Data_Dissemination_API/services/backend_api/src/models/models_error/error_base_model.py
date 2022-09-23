@@ -1,8 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without modification, is prohibited for all commercial
-# applications without licensing by GeoVille GmbH.
-#
 # Error base definition model for all kind of errors
 #
 # Date created: 01.06.2020

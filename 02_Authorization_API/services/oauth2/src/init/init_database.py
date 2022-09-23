@@ -1,9 +1,5 @@
 ########################################################################################################################
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, is prohibited for all commercial applications without
-# licensing by GeoVille GmbH.
-#
 # Index Page for the API Gateway
 #
 # Date created: 28.09.2019
