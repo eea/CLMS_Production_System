@@ -54,6 +54,13 @@
 * 4. Step 4: Downloading the Product
 * 5. Example Visualization within QGIS of the Raster data and the Vector data
 
+1.  Step 1
+2.  Step 2
+3.  Step 3
+    1.  Step 3.1
+    2.  Step 3.2
+    3.  Step 3.3
+    
 ### 1 Executive Summary
 
 This manual is intended to aim as step by step how-to for accessing and using the CLC+ Backbone “get_Product
