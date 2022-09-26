@@ -84,6 +84,7 @@ https://api.clcplusbackbone.geoville.com/v1/
 * Click - “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
 
 ![Figure 1:The SWAGGER Endpoint for creating a bearer token (1)](img/image001.png)
+
 <em>The Amazon Rainforest contains a multitude of species.</em>
 
 * Insert the requested credentials in the payload white box (Figure 2). 
