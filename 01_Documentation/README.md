@@ -83,7 +83,7 @@ https://api.clcplusbackbone.geoville.com/v1/
 
 * Click - “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
 
-![Alt text](img/image001.png)
+![Figure 1:The SWAGGER Endpoint for creating a bearer token (1)](img/image001.png)
 
 * Insert the requested credentials in the payload white box (Figure 2). 
 * Once inserted, click on the “Execute” button (Figure 2).
