@@ -51,6 +51,8 @@ in turn triggers an Airflow DAG, manual processes are simply database updates to
 and monitor manual steps. Therefore, replicable products can be ensured.
 
 #### 9. Monitoring & Logging
+The system monitoring is based on the Grafana software. Grafana is a multi-platform analytics and visualization tool. It provides charts, graphs, metrics, logs, traces and for monitoring the health state of a system. 
+
 The logging module is used to log and monitor all relevant messages of the backbone processing system. The moduel T module supports different log levels (INGO, WARNING, ERROR). It's written in Python and the module architecture is based on a message queueing system (RabbitMQ). 
 
 #### 10. Additional Python Modules
