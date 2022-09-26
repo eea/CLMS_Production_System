@@ -85,7 +85,7 @@ https://api.clcplusbackbone.geoville.com/v1/
 
 ![Figure 1:The SWAGGER Endpoint for creating a bearer token (1)](img/image001.png)
 
-<em>The Amazon Rainforest contains a multitude of species.</em>
+<em style="padding-top: -20px">The Amazon Rainforest contains a multitude of species.</em>
 
 * Insert the requested credentials in the payload white box (Figure 2). 
 * Once inserted, click on the “Execute” button (Figure 2).
