@@ -1,5 +1,8 @@
 ## System Components (third party software licenses)
 
+powered by
+
+<img src="https://staticfiles.geoville.com/data/general/geoville_logo_dark.png" alt="Markdown Monster icon" style="float: left; margin-right: 10px;" />
 ---
 
 ## Contributors
