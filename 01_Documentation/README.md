@@ -48,19 +48,13 @@
 * 1. Executive Summary
 * 2. EEAs Credentials
 * 3. Ordering Steps 
-  * 3.1. Step 1: Get a bearer token 
-  * 3.2. Step 2: Order of the packaging into Raster or Vector 
-  * 3.3 Step 3: Checking the status of the Order 
+  * 1. Step 1: Get a bearer token 
+  * 2. Step 2: Order of the packaging into Raster or Vector 
+  * 3. Step 3: Checking the status of the Order 
 * 4. Step 4: Downloading the Product
 * 5. Example Visualization within QGIS of the Raster data and the Vector data
 
-1.  Step 1
-2.  Step 2
-3.  Step 3
-    1.  Step 3.1
-    2.  Step 3.2
-    3.  Step 3.3
-    
+
 ### 1 Executive Summary
 
 This manual is intended to aim as step by step how-to for accessing and using the CLC+ Backbone “get_Product
@@ -87,7 +81,7 @@ https://api.clcplusbackbone.geoville.com/v1/
 
 **POST**: /auth/get_bearer_token
 
-* Click – “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
+* Click - “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
 * Insert the requested credentials in the payload white box (Figure 2). 
 * Once inserted, click on the “Execute” button (Figure 2).
 
@@ -146,10 +140,59 @@ the order ID which was received from the former POST request (see the red box in
 
 #### 3.3 Step 3: Checking the status of the Order
 
+**➔ Services (Service related operations)**
+
+**GET** /services/order_status/{order_id}
+
+With the endpoint services/order_status/{order_id} the status of the order can be checked. The possible
+states are:
+
+* FAILED: An unexpected error occurred during the execution of the service
+* SUCCESS: Service was successful - > RESULT String will deliver the download link
+* QUEUED: Submitted request is in the waiting list
+* RECEIVED: API received the service request and created an order ID
+* RUNNING: Service is being calculated at the moment
+* INVALID: It indicates that there is wrong input provided
+
+Note: The cutting of the data takes some time to be donw, depending on the size of the provided geometry.
+Average runtimes for ~10.000 km2 are within minutes (Raster being the faster delivered products,
+compared to Vector ones).
+
+* Click the “Try it out” button. 
+* Insert the access token from Step 2 into the Authorization box. (i.e. Bearer zZYqplU66dFTb9BZRg1ekyWhrWwBxpbJqdnZfPNU1S)
+* Provide the order_id from step 2.
+* After doing so, click on the “Execute” button. In case the Order is successful the Response will carry the result paths to the S3 object-store at WEkEO.
+
+A Curl example for a status check of an order with the order_id d371e64324033b2d8cd0a35a9d693975
+would look as in the figure below.
+
+In case the order is successful the response will carry a link that allows the user to download the result from
+the S3 object-store at WEkEO.
+
 ### Step 4: Downloading the Product
 
-TODO
+To download the product to the customer from the S3 storage. For this procedure, @WEkEO standard S3
+mechanisms can be implemented. Note that the Filename is of your response.
+
+**Here the example with boto3 and Python:**
+
+* The access_key_id = “bc8e686837c2476ba4dcef06ba7272ca
+* The secret_access_key = “2e7516dc941f4bdcae1204d51c354bee”
+
+➔ Please copy the product id from Step 4 into the red box and add a path and filename where you want to save your data.
+
+The data itself will contain the following files:
+
 
 ### 5. Example Visualization within QGIS of the Raster data and the Vector data
 
-TOOD
+* tfw - Images are stored as raster data wherein each cell in the image has a row and column number. Vector data, such as feature classes in geodatabases, shapefiles, and coverages, is stored in real-world coordinates. To display images with this vector data, it is necessary to establish an image-to-world transformation that converts the image coordinates to real-world coordinates. This transformation information is typically stored with the image.
+* .tif – dataset itself
+* .xml - standard XML Files and widely adopted by many systems to store and read metadata that might or might not be in the header of the file
+* aux.xml - the histogram information for the image - which is often only a .aux file rather than having .xml on the end of that.
+* .tif.vat.cpg - a code page file, which gives the character encoding for whatever it refers to. In this case that dbf file. Note that .vat is a value attribute table aka raster attribute table
+* .tif.ovr - the pyramid file, basically some lower resolution duplicates of the image to speed up redraw when zoomed out
+* .tif.clr - The Colormap function is a type of raster data renderer. It transforms the pixel values to display the raster data as either a grayscale or a color (RGB) image based on specific colors in a color map file, or based on a color ramp. You can use a color map to represent analyzed data, such as a classified image, or when displaying a topographic map (or index color-scanned image). When the Colormap function is used, ArcGIS will display the mosaic dataset using the color map renderer or with a specified
+color ramp.
+* .qml - A file with .qml extension is a XML file that stores layer styling information for QGIS layers. QGIS is an open-source cross-platform GIS application used to display geospatial data with the capability of organizing data in the form of layers. QML files contain information that is used by the QGIS to render feature geometries including  symbol definitions, sizes and rotations, labelling, opacity, blend mode, and much more. Unlike the QLR files, QML files contains all the styling information in itself.
+* txt – same information as the .clr and .qml but also explaining the classes by names
