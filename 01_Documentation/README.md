@@ -78,7 +78,7 @@ https://api.clcplusbackbone.geoville.com/v1/
 
 ➔ auth (Authentication related operations)
 
-*POST*: /auth/get_bearer_token
+**POST**: /auth/get_bearer_token
 
 - Click – “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
 - Insert the requested credentials in the payload white box (Figure 2). 
