@@ -46,6 +46,15 @@
 ### Table of Contents
 
 - 1. Executive Summary
+- 2. EEAs Credentials
+- 3. Ordering Steps
+    - 3.1 Step 1: Get a bearer token
+    - 3.2 Step 2: Order of the packaging into Raster or Vector
+    - 3.3 Step 3: Checking the status of the Order
+- 4. Step 4: Downloading the Product
+- 5. Example Visualization within QGIS of the Raster data and the Vector data
+
+### 1 Executive Summary
 
 This manual is intended to aim as step by step how-to for accessing and using the CLC+ Backbone “get_Product
 API”. This API Endpoint will provide access to the products (i.e., Raster or Vector) stored within the WEkEO
@@ -53,18 +62,6 @@ CLC+ Backbone Data store (NetCDF with HDF5).
 
 By using this document an implementation of the CLC+ Backbone Product API into the Copernicus Land
 Monitoring System can be achieved.
-
-- 2. EEAs Credentials
-- 3. Ordering Steps
-  - 3.1 Step 1: Get a bearer token
-  - 3.2 Step 2: Order of the packaging into Raster or Vector
-  - 3.3 Step 3: Checking the status of the Order
-- 4. Step 4: Downloading the Product
-- 5. Example Visualization within QGIS of the Raster data and the Vector data
-
-### 1 Executive Summary
-
-TODO
 
 ### 2 EEAs Credentials
 
