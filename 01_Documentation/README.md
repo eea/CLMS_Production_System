@@ -33,7 +33,7 @@
 |--|--|--|
 |Johannes Schmid (GeoVille)|Creation| 19/11/2021
 |Tanja Gasber (GeoVille)|Creation| 19/11/2021
-|Inés Ruiz  (GAF)|Revision| |
+|Inés Ruiz  (GAF)|Revision|-|
 |Tobias Langanke (EEA) (GAF)|Approval|-|
 
 ### Document History & Change Record
@@ -47,10 +47,10 @@
 
 1. Executive Summary
 2. EEAs Credentials
-3. Ordering Steps <br/>
-    3.1. Step 1: Get a bearer token <br/>
-    3.2. Step 2: Order of the packaging into Raster or Vector <br/>
-    3.3 Step 3: Checking the status of the Order <br/> 
+3. Ordering Steps 
+    * 3.1. Step 1: Get a bearer token 
+    * 3.2. Step 2: Order of the packaging into Raster or Vector 
+    * 3.3 Step 3: Checking the status of the Order 
 4. Step 4: Downloading the Product
 5. Example Visualization within QGIS of the Raster data and the Vector data
 
@@ -65,11 +65,22 @@ Monitoring System can be achieved.
 
 ### 2 EEAs Credentials
 
-TODO
+Please insert your credentials (user_id and client_secret) to create your bearer token to be able to order your
+products by following the steps addressed below.
 
 ### 3 Ordering Steps
 
 #### 3.1 Step 1: Get a bearer token
+
+Swagger Endpoint for Testing
+
+https://api.clcplusbackbone.geoville.com/v1/
+
+➔ auth (Authentication related operations)
+*POST*: /auth/get_bearer_token
+
+- Click – “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
+
 #### 3.2 Step 2: Order of the packaging into Raster or Vector
 #### 3.3 Step 3: Checking the status of the Order
 
