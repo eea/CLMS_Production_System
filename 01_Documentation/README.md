@@ -45,14 +45,14 @@
 
 ### Table of Contents
 
-1. Executive Summary
-2. EEAs Credentials
-3. Ordering Steps 
-    * 3.1. Step 1: Get a bearer token 
-    * 3.2. Step 2: Order of the packaging into Raster or Vector 
-    * 3.3 Step 3: Checking the status of the Order 
-4. Step 4: Downloading the Product
-5. Example Visualization within QGIS of the Raster data and the Vector data
+* 1. Executive Summary
+* 2. EEAs Credentials
+* 3. Ordering Steps 
+  * 3.1. Step 1: Get a bearer token 
+  * 3.2. Step 2: Order of the packaging into Raster or Vector 
+  * 3.3 Step 3: Checking the status of the Order 
+* 4. Step 4: Downloading the Product
+* 5. Example Visualization within QGIS of the Raster data and the Vector data
 
 ### 1 Executive Summary
 
@@ -77,9 +77,12 @@ Swagger Endpoint for Testing
 https://api.clcplusbackbone.geoville.com/v1/
 
 ➔ auth (Authentication related operations)
+
 *POST*: /auth/get_bearer_token
 
 - Click – “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
+- Insert the requested credentials in the payload white box (Figure 2). 
+- Once inserted, click on the “Execute” button (Figure 2).
 
 #### 3.2 Step 2: Order of the packaging into Raster or Vector
 #### 3.3 Step 3: Checking the status of the Order
