@@ -48,7 +48,7 @@
 1. Executive Summary
 2. EEAs Credentials
 3. Ordering Steps
-    1. Step 1: Get a bearer token
+    3.1. Step 1: Get a bearer token
     2. Step 2: Order of the packaging into Raster or Vector
     3. Step 3: Checking the status of the Order
 4. Step 4: Downloading the Product
