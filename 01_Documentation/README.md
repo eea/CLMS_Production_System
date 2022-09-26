@@ -5,13 +5,13 @@
 ## Contributors
 * Johannes Schmid
 * Samuel Carraro
-* Michek Schwandner
+* Patrick Wolf
 
 ## BACKBONE SYSTEM  - MANUAL API
 
 - Issue: 1.1
 - Date: 23/05/2022
-- Compiled by:GEOVILLE & GAF AG
+- Compiled by: GEOVILLE & GAF AG
 
 ### Document Description
 
@@ -55,7 +55,7 @@
 * 5. Example Visualization within QGIS of the Raster data and the Vector data
 
 
-### 1 Executive Summary
+### 1. Executive Summary
 
 This manual is intended to aim as step by step how-to for accessing and using the CLC+ Backbone “get_Product
 API”. This API Endpoint will provide access to the products (i.e., Raster or Vector) stored within the WEkEO
@@ -64,12 +64,12 @@ CLC+ Backbone Data store (NetCDF with HDF5).
 By using this document an implementation of the CLC+ Backbone Product API into the Copernicus Land
 Monitoring System can be achieved.
 
-### 2 EEAs Credentials
+### 2. EEAs Credentials
 
 Please insert your credentials (user_id and client_secret) to create your bearer token to be able to order your
 products by following the steps addressed below.
 
-### 3 Ordering Steps
+### 3. Ordering Steps
 
 #### 3.1 Step 1: Get a bearer token
 
@@ -82,6 +82,9 @@ https://api.clcplusbackbone.geoville.com/v1/
 **POST**: /auth/get_bearer_token
 
 * Click - “Try it out” button. When clicking this button, the black window box turns white (Figure 1) allowing the insertion of credentials. 
+
+[Alt text](/img/image001.jpg)
+
 * Insert the requested credentials in the payload white box (Figure 2). 
 * Once inserted, click on the “Execute” button (Figure 2).
 
