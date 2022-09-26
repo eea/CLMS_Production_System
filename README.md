@@ -2,7 +2,7 @@
 CLC+ Backbone System and Data Dissemination API
 
 powered by
-![Figure 1:GeoVille Logo](01_Documentation/img/geoville.png)
+![Figure 1:GeoVille Logo](01_Documentation/img/geoville_logo.png)
 
 ## Introduction
 This repository provides all components, descriptions, configurations, sources and manuals of the CLC+ backbone system and data dissemination API.
