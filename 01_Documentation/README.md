@@ -84,6 +84,12 @@ https://api.clcplusbackbone.geoville.com/v1/
 - Insert the requested credentials in the payload white box (Figure 2). 
 - Once inserted, click on the “Execute” button (Figure 2).
 
+It will look similar to the following curl example:
+
+After running “Execute”, a successful response (200) returns a valid token, which will be valid at the moment
+for 100 days. After its implementation in the CLMS portal, this value will be adjusted to a value compatible
+to security guidelines. The access token needs to be then copied for the next step.
+
 #### 3.2 Step 2: Order of the packaging into Raster or Vector
 #### 3.3 Step 3: Checking the status of the Order
 
