@@ -81,3 +81,5 @@ The modules are:
   products to netCDF files. The product netCDF files will be accessed by the 
   endpoints within the 'products' namespace of the API.
 
+#### 11. System Components (third party software licenses)
+List of all software modules and their licence models.
