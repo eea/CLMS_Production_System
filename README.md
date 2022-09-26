@@ -5,10 +5,11 @@ CLC+ Backbone System and Data Dissemination API
 This repository provides all components, descriptions, configurations, sources and manuals of the CLC+ backbone system and data dissemination API.
 
 #### 1. Documentation 
-Product specification and user manual
+Product specification and user manual.
 
 #### 2. Authorization API
-OAuth2 server based on Python for user authorization
+User authentication, authorization and management are based on the OAuth2 framework. It is used to exchange data between client and server through authorization. 
+The API of the authorization server provides a set of endpoints which are required to perform common authorization operations and flows. Amongst others, this includes for example creating OAuth clients, user login, access token generation, token validation and the generation of scopes and scope managements.
 
 #### 3. Service and Data Dissemination API
 The Python based API gateway sits between the client and a collection of backend 
@@ -24,7 +25,7 @@ within the 'section' namespace, the retrieval of the products is within the
 'products' section of the API.
 
 #### 4. Airflow
-Apache Airflow installation and configuration
+Apache Airflow is a workflow management platform and is used to create data pipelines. This repository provides the configuratin of the airflow instance and the Airflow workers. 
 
 #### 5. Airflow DAGs
 This section contains the source codes of the Airflow Directed Acyclic Graphs (DAGs).
@@ -36,10 +37,10 @@ application (Docker), a Bash Command or simply a Python function.
 
 
 #### 6. Database
-Database DDL files and database models
+Any modern backend solution needs a storage system to store data whilst processing particular tasks. As spatial information will be processed in the project, the tool chosen was a PostgreSQL database server with its extension PostGIS for spatial operations. A relational database model is required to persist the processed information in a structured manner. This directory provides database DDL files and database models.
 
 #### 7. Status Manager
-Source code of the status manager service
+The status manager is responsible for updating the status of each order. Whenever the status of an order changes, the manager sets the according state in the order database. The module is based on Python. The possible states are: RECEIVED, RUNNING, QUEUED, SUCCESS, FAILED. 
 
 #### 8. User Interface
 The user interface is a _Vue.js_ based frontend for the communication with the service API. 
@@ -50,7 +51,7 @@ in turn triggers an Airflow DAG, manual processes are simply database updates to
 and monitor manual steps. Therefore, replicable products can be ensured.
 
 #### 9. Monitoring & Logging
-Grafana dashboards and logging techniques
+The logging module is used to log and monitor all relevant messages of the backbone processing system. The moduel T module supports different log levels (INGO, WARNING, ERROR). It's written in Python and the module architecture is based on a message queueing system (RabbitMQ). 
 
 #### 10. Additional Python Modules
 The system architecture also includes helper functions and modules
