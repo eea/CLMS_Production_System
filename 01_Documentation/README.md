@@ -17,36 +17,69 @@
 
 | Settings | Value |
 |--|--|
-|Document Title| SYSTEM SPECIFICATION |
+|Document Title| Backbone System Manual: API |
 |Project Title| Copernicus Land Monitoring Service – CLC+ Backbone Production, including Raster and Vector Products based on Satellite Input Data from 2017/2018/2019|
-|Document Author(s)| GeoVille |
+|Document Author(s)| GAF AG and GeoVille |
 |Project Owner| Hans Dufourmont (EEA) |
 |Project Manager| Tobias Langanke (EEA)|
-|Doc. Issue/Version| 1.0 |
-|Date| xx/xx/2022 |
-|Date| Backbone System Manual: API |
-|Distribution List| CLC+ Backbone project consortium; Project Officer and European Environment Agency services |
-|Confidentiality| Confidential to the above Distribution List |
+|Doc. Issue/Version| 1.1 |
+|Date| 23/05/2022 |
+|Distribution List| Consortium and EEA |
+|Confidentiality| - |
 
 ### Document Release Sheet 
 
 | Name | Role | Date |
 |--|--|--|
-|Johannes Schmid (GeoVille)|Creation| xx/xx/2022
-|Wolfgang Kapferer (GeoVille)|Creation| xx/xx/2022
-|Markus Probeck (GAF)|Revision| |
-|Inés Ruiz Gomez (GAF)|Revision| |
-|Tobias Langanke (EEA)|Approval| |
+|Johannes Schmid (GeoVille)|Creation| 19/11/2021
+|Tanja Gasber (GeoVille)|Creation| 19/11/2021
+|Inés Ruiz  (GAF)|Revision| |
+|Tobias Langanke (EEA) (GAF)|Approval|-|
 
 ### Document History & Change Record
 
 | Issue / Version | Release Date | Created by | Description of Issue / Change(s)|
 |--|--|--|--|
-|1.0|20/07/2021|GAF / GeoVille|First Issue of the CLC+ Backbone System Specification|
+|1.0|18.12.2021GeoVille / GAF AG |-|
+|1.1|-|GAF / GeoVille|Vector products|
 
-### Applicable Documents
+### Table of Contents
 
-| Issue | Document |
-|--|--|
-| [AD-01] | EN-EEA.DIS.R0.19.012_Annex+I_Tender+Specifications_001 |
-| [AD-02] | EN-EEA.DIS.R0.19.012_Annex 7 to TS_Technical+specification_Land+monitoring+concept_EAGLE |
+- 1. Executive Summary
+
+This manual is intended to aim as step by step how-to for accessing and using the CLC+ Backbone “get_Product
+API”. This API Endpoint will provide access to the products (i.e., Raster or Vector) stored within the WEkEO
+CLC+ Backbone Data store (NetCDF with HDF5).
+
+By using this document an implementation of the CLC+ Backbone Product API into the Copernicus Land
+Monitoring System can be achieved.
+
+- 2. EEAs Credentials
+- 3. Ordering Steps
+  - 3.1 Step 1: Get a bearer token
+  - 3.2 Step 2: Order of the packaging into Raster or Vector
+  - 3.3 Step 3: Checking the status of the Order
+- 4. Step 4: Downloading the Product
+- 5. Example Visualization within QGIS of the Raster data and the Vector data
+
+### 1 Executive Summary
+
+TODO
+
+### 2 EEAs Credentials
+
+TODO
+
+### 3 Ordering Steps
+
+#### 3.1 Step 1: Get a bearer token
+#### 3.2 Step 2: Order of the packaging into Raster or Vector
+#### 3.3 Step 3: Checking the status of the Order
+
+### Step 4: Downloading the Product
+
+TODO
+
+### 5. Example Visualization within QGIS of the Raster data and the Vector data
+
+TOOD
