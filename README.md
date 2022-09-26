@@ -2,6 +2,7 @@
 CLC+ Backbone System and Data Dissemination API
 
 powered by
+
 ![Figure 1:GeoVille Logo](01_Documentation/img/geoville_logo_150.png)
 
 ## Introduction
